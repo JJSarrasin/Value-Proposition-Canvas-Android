@@ -1,11 +1,12 @@
 package ch.hesso.valueproposition.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -17,8 +18,13 @@ import java.util.Map;
 
 import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.adapters.CanvasListAdapter;
+import ch.hesso.valueproposition.utils.Constants;
 
 public class HomeFragment extends ListFragment {
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
+    }
+
     public HomeFragment() {
     }
 
@@ -44,7 +50,22 @@ public class HomeFragment extends ListFragment {
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
         fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CanvasActivity.class));
+            }
+        });
 
         return rootView;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Map<String, String> selectedItem = (Map<String, String>) l.getItemAtPosition(position);
+
+        Intent intent = new Intent(getActivity(), ElementsActivity.class);
+        intent.putExtra(Constants.EXTRA_ID, Integer.parseInt(selectedItem.get("ID")));
+        startActivity(intent);
     }
 }

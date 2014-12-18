@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:orientation="vertical"
+    android:divider="@drawable/spacer_medium"
+    android:padding="@dimen/form_spacing"
+    android:showDividers="middle">
+
+    <EditText
+        android:id="@+id/canvas_edittext_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/canvas_edittext_title"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/canvas_edittext_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/canvas_edittext_description"
+        android:textSize="15sp" />
+</LinearLayout>

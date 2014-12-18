@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Value Proposition Canvas</string>
 
     <!-- Home-->
     <string name="home_canvas_empty">Create a new canvas</string>
+
+    <!-- Canvas (Edit) -->
+    <string name="canvas_title_new">New Canvas</string>
+    <string name="canvas_title_edit">Edit Canvas</string>
+    <string name="canvas_edittext_title">Title</string>
+    <string name="canvas_edittext_description">Description</string>
+
 
     <!-- Action buttons -->
     <string name="action_add">Add</string>
