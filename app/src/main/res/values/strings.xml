@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ValueProposition</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Value Proposition Canvas</string>
+
+    <!-- Home-->
+    <string name="home_canvas_empty">Create a new canvas</string>
+
+    <!-- Action buttons -->
+    <string name="action_add">Add</string>
+    <string name="action_save">Save</string>
+    <string name="action_export">Export</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_add_question">Add question</string>
+    <string name="action_share">Share</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
