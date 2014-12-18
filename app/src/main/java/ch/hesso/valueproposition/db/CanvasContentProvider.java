@@ -313,7 +313,37 @@ public class CanvasContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int deletedRows;
+        String finalWhere;
+
+        switch (sUriMatcher.match(uri)) {
+            case CANVAS_ID:
+                finalWhere = DbObjects.Canvas._ID + "=" + uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION);
+                if (selection != null) selection = finalWhere + " AND " + selection;
+                else selection = finalWhere;
+            case CANVAS:
+                deletedRows = db.delete(DbObjects.Canvas.TABLE, selection, selectionArgs);
+                break;
+            case QUESTION_ID:
+                finalWhere = DbObjects.Questions._ID + "=" + uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION);
+                if (selection != null) selection = finalWhere + " AND " + selection;
+                else selection = finalWhere;
+            case QUESTIONS:
+                deletedRows = db.delete(DbObjects.Questions.TABLE, selection, selectionArgs);
+                break;
+            case IDEA_ID:
+                finalWhere = DbObjects.Ideas._ID + "=" + uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION);
+                if (selection != null) selection = finalWhere + " AND " + selection;
+                else selection = finalWhere;
+            case IDEAS:
+                deletedRows = db.delete(DbObjects.Ideas.TABLE, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        if (deletedRows > 0) getContext().getContentResolver().notifyChange(uri, null);
+        return deletedRows;
     }
 }
