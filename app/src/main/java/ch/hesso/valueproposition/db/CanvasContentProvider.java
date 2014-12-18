@@ -1,10 +1,12 @@
 package ch.hesso.valueproposition.db;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -17,17 +19,17 @@ public class CanvasContentProvider extends ContentProvider {
 
     // Used for debugging and logging
     @SuppressWarnings("unused")
-    private static final String				TAG					= CanvasContentProvider.class.getSimpleName();
+    private static final String TAG = CanvasContentProvider.class.getSimpleName();
 
     /**
      * The database that the provider uses as its underlying data store
      */
-    private static final String				DATABASE_NAME		= "canvas.db";
+    private static final String DATABASE_NAME = "canvas.db";
 
     /**
      * The database version
      */
-    private static final int				DATABASE_VERSION	= 1;
+    private static final int DATABASE_VERSION = 1;
 
     /*
      * Constants used by the Uri matcher to choose an action based on the pattern of the incoming URI
@@ -140,7 +142,7 @@ public class CanvasContentProvider extends ContentProvider {
             case QUESTIONS:
                 return DbObjects.Questions.CONTENT_TYPE;
             case QUESTION_ID:
-                return  DbObjects.Questions.CONTENT_ITEM_TYPE;
+                return DbObjects.Questions.CONTENT_ITEM_TYPE;
 
             case IDEAS:
                 return DbObjects.Ideas.CONTENT_TYPE;
@@ -159,24 +161,24 @@ public class CanvasContentProvider extends ContentProvider {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
         switch (sUriMatcher.match(uri)) {
-            case CANVAS :
+            case CANVAS:
                 qb.setTables(DbObjects.Canvas.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
-            case CANVAS_ID :
+            case CANVAS_ID:
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
                 break;
-            case QUESTIONS :
+            case QUESTIONS:
                 qb.setTables(DbObjects.Canvas.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
-            case QUESTION_ID :
+            case QUESTION_ID:
                 qb.appendWhere(DbObjects.Questions._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION));
                 break;
-            case IDEAS :
+            case IDEAS:
                 qb.setTables(DbObjects.Canvas.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
-            case IDEA_ID :
+            case IDEA_ID:
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION));
                 break;
@@ -209,7 +211,7 @@ public class CanvasContentProvider extends ContentProvider {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
 		/*
-		 * Performs the query. If no problems occur trying to read the database, then a Cursor object is returned; otherwise, the cursor variable contains null. If no records were
+         * Performs the query. If no problems occur trying to read the database, then a Cursor object is returned; otherwise, the cursor variable contains null. If no records were
 		 * selected, then the Cursor object is empty, and Cursor.getCount() returns 0.
 		 */
         Cursor c = qb.query(db, // The database to query
@@ -227,9 +229,43 @@ public class CanvasContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Uri insert(Uri uri, ContentValues initialValues) {
+        ContentValues values;
+        if (initialValues != null)
+            values = new ContentValues(initialValues);
+        else
+            values = new ContentValues();
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        long now = System.currentTimeMillis();
+        long insertedId;
+        Uri insertedUri = null;
+
+        switch (sUriMatcher.match(uri)) {
+            case CANVAS:
+                if (!values.containsKey(DbObjects.Canvas.COL_CREATED_AT))
+                    values.put(DbObjects.Canvas.COL_CREATED_AT, now);
+                insertedId = db.insert(DbObjects.Canvas.TABLE, null, values);
+                insertedUri = ContentUris.withAppendedId(DbObjects.Canvas.CONTENT_ID_URI_BASE, insertedId);
+                break;
+            case QUESTIONS:
+                if (!values.containsKey(DbObjects.Questions.COL_CREATED_AT))
+                    values.put(DbObjects.Questions.COL_CREATED_AT, now);
+                insertedId = db.insert(DbObjects.Questions.TABLE, null, values);
+                insertedUri = ContentUris.withAppendedId(DbObjects.Questions.CONTENT_ID_URI_BASE, insertedId);
+                break;
+            case IDEAS:
+                if (!values.containsKey(DbObjects.Ideas.COL_CREATED_AT))
+                    values.put(DbObjects.Ideas.COL_CREATED_AT, now);
+                insertedId = db.insert(DbObjects.Ideas.TABLE, null, values);
+                insertedUri = ContentUris.withAppendedId(DbObjects.Ideas.CONTENT_ID_URI_BASE, insertedId);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        if (insertedId == -1) throw new SQLException("Failed to insert row for " + uri);
+        getContext().getContentResolver().notifyChange(insertedUri, null);
+        return insertedUri;
     }
 
     @Override
