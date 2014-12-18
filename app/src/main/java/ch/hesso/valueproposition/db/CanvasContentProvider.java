@@ -271,8 +271,44 @@ public class CanvasContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        long now = System.currentTimeMillis();
+        int updatedRows = 0;
+        String finalWhere;
+
+        switch (sUriMatcher.match(uri)) {
+            case CANVAS:
+                updatedRows = db.update(DbObjects.Canvas.TABLE, values, selection, selectionArgs);
+                break;
+            case CANVAS_ID:
+                String canvasId = uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION);
+                finalWhere = DbObjects.Canvas._ID + " = " + canvasId;
+                if (selection != null) finalWhere = finalWhere + " AND " + selection;
+                updatedRows = db.update(DbObjects.Canvas.TABLE, values, finalWhere, selectionArgs);
+                break;
+            case QUESTIONS:
+                updatedRows = db.update(DbObjects.Questions.TABLE, values, selection, selectionArgs);
+                break;
+            case QUESTION_ID:
+                String questionId = uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION);
+                finalWhere = DbObjects.Questions._ID + " = " + questionId;
+                if (selection != null) finalWhere = finalWhere + " AND " + selection;
+                updatedRows = db.update(DbObjects.Questions.TABLE, values, finalWhere, selectionArgs);
+                break;
+            case IDEAS:
+                updatedRows = db.update(DbObjects.Ideas.TABLE, values, selection, selectionArgs);
+                break;
+            case IDEA_ID:
+                String ideaId = uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION);
+                finalWhere = DbObjects.Ideas._ID + " = " + ideaId;
+                if (selection != null) finalWhere = finalWhere + " AND " + selection;
+                updatedRows = db.update(DbObjects.Ideas.TABLE, values, finalWhere, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        if (updatedRows != 0) getContext().getContentResolver().notifyChange(uri, null);
+        return updatedRows;
     }
 
     @Override
