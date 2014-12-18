@@ -7,7 +7,9 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import java.util.HashMap;
 
@@ -154,8 +156,74 @@ public class CanvasContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
-        throw new UnsupportedOperationException("Not yet implemented");
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        switch (sUriMatcher.match(uri)) {
+            case CANVAS :
+                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
+            case CANVAS_ID :
+                qb.appendWhere(DbObjects.Canvas._ID + "=" +
+                        uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
+                break;
+            case QUESTIONS :
+                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
+            case QUESTION_ID :
+                qb.appendWhere(DbObjects.Questions._ID + "=" +
+                        uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION));
+                break;
+            case IDEAS :
+                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
+            case IDEA_ID :
+                qb.appendWhere(DbObjects.Canvas._ID + "=" +
+                        uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION));
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        // If no sort order is specified, uses the default
+        String orderBy = "";
+        if (TextUtils.isEmpty(sortOrder)) {
+            switch (sUriMatcher.match(uri)) {
+                case CANVAS:
+                case CANVAS_ID:
+                    orderBy = DbObjects.Canvas.DEFAULT_SORT_ORDER;
+                    break;
+                case QUESTIONS:
+                case QUESTION_ID:
+                    orderBy = DbObjects.Questions.DEFAULT_SORT_ORDER;
+                    break;
+                case IDEAS:
+                case IDEA_ID:
+                    orderBy = DbObjects.Ideas.DEFAULT_SORT_ORDER;
+                    break;
+            }
+        } else {
+            orderBy = sortOrder;
+        }
+        // Opens the database object in "read" mode, since no writes need to be
+        // done.
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+		/*
+		 * Performs the query. If no problems occur trying to read the database, then a Cursor object is returned; otherwise, the cursor variable contains null. If no records were
+		 * selected, then the Cursor object is empty, and Cursor.getCount() returns 0.
+		 */
+        Cursor c = qb.query(db, // The database to query
+                projection, // The columns to return from the query
+                selection, // The columns for the where clause
+                selectionArgs, // The values for the where clause
+                null, // don't group the rows
+                null, // don't filter by row groups
+                orderBy // The sort order
+        );
+
+        // Tells the Cursor what URI to watch, so it knows when its source data changes
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 
     @Override
