@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.hesso.valueproposition" >
+    package="ch.hesso.valueproposition">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +25,18 @@
         <activity
             android:name=".ui.ElementsActivity"
             android:parentActivityName=".ui.HomeActivity" />
+
+        <activity
+            android:name=".ui.ExportActivity"
+            android:parentActivityName=".ui.ElementsActivity" />
+
+        <activity
+            android:name=".ui.IdeasListActivity"
+            android:parentActivityName=".ui.ElementsActivity" />
+
+        <activity
+            android:name=".ui.IdeaActivity"
+            android:parentActivityName=".ui.IdeasListActivity" />
 
         <provider
             android:name=".db.CanvasContentProvider"

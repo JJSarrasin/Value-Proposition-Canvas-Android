@@ -39,7 +39,7 @@ public class CanvasListAdapter extends SimpleAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, CanvasActivity.class);
-                    intent.putExtra(Constants.EXTRA_ID, Integer.parseInt(data.get(position).get("ID")));
+                    intent.putExtra(Constants.EXTRA_CANVAS_ID, Integer.parseInt(data.get(position).get("ID")));
                     context.startActivity(intent);
                 }
             });

@@ -14,16 +14,16 @@ import android.widget.EditText;
 import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.utils.Constants;
 
-public class CanvasFragment extends Fragment {
+public class IdeaFragment extends Fragment {
     private EditText titleEditText;
     private EditText descriptionEditText;
     private int currentCanvasId = 0;
 
-    public static CanvasFragment newInstance() {
-        return new CanvasFragment();
+    public static IdeaFragment newInstance() {
+        return new IdeaFragment();
     }
 
-    public CanvasFragment() {
+    public IdeaFragment() {
     }
 
     @Override
@@ -31,6 +31,7 @@ public class CanvasFragment extends Fragment {
         setHasOptionsMenu(true);
 
         View rootView = inflater.inflate(R.layout.fragment_canvas, container, false);
+
 
         titleEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_title);
         descriptionEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_description);

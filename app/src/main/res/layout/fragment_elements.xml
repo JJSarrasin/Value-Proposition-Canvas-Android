@@ -1,0 +1,170 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            card_view:cardCornerRadius="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/elements_imageview_product"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_section_product"/>
+
+                <TextView
+                    android:id="@+id/elements_textview_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/elements_imageview_product"
+                    android:textColor="@color/primary_text"
+                    android:textSize="20sp"
+                    android:text="@string/elements_section_product"/>
+
+                <View
+                    android:id="@+id/elements_card_divider_product"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/divider"
+                    android:layout_below="@+id/elements_textview_product" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_below="@+id/elements_card_divider_product">
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_productsservices"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_productsservices"
+                        android:text="@string/elements_item_1"
+                        android:tag="1" />
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_gaincreators"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_gaincreators"
+                        android:text="@string/elements_item_2"
+                        android:tag="2" />
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_painrelievers"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_painrelievers"
+                        android:text="@string/elements_item_3"
+                        android:tag="3" />
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40dp"
+            card_view:cardCornerRadius="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/elements_imageview_customer"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_section_customer"/>
+
+                <TextView
+                    android:id="@+id/elements_textview_customer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/elements_imageview_customer"
+                    android:textColor="@color/primary_text"
+                    android:textSize="20sp"
+                    android:text="@string/elements_section_customer"/>
+
+                <View
+                    android:id="@+id/elements_card_divider_customer"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/divider"
+                    android:layout_below="@+id/elements_textview_customer" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_below="@+id/elements_card_divider_customer">
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_customerjobs"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_customerjobs"
+                        android:text="@string/elements_item_4"
+                        android:tag="4" />
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_gains"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_gains"
+                        android:text="@string/elements_item_5"
+                        android:tag="5" />
+
+                    <Button
+                        android:id="@+id/elements_imagebutton_pains"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableTop="@drawable/ic_item_pains"
+                        android:text="@string/elements_item_6"
+                        android:tag="6" />
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

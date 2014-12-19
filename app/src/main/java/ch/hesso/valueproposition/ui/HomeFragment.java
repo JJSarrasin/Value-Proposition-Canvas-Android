@@ -6,7 +6,6 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -46,7 +45,7 @@ public class HomeFragment extends ListFragment {
         map_2.put("ID", "2");
         list.add(map_2);
 
-        setListAdapter(new CanvasListAdapter(getActivity(), list, R.layout.home_card_element, new String[]{"TITLE", "DESCRIPTION"}, new int[]{R.id.home_card_element_title, R.id.home_card_element_description}));
+        setListAdapter(new CanvasListAdapter(getActivity(), list, R.layout.element_home_card, new String[]{"TITLE", "DESCRIPTION"}, new int[]{R.id.home_card_element_title, R.id.home_card_element_description}));
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
         fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
@@ -65,7 +64,7 @@ public class HomeFragment extends ListFragment {
         Map<String, String> selectedItem = (Map<String, String>) l.getItemAtPosition(position);
 
         Intent intent = new Intent(getActivity(), ElementsActivity.class);
-        intent.putExtra(Constants.EXTRA_ID, Integer.parseInt(selectedItem.get("ID")));
+        intent.putExtra(Constants.EXTRA_CANVAS_ID, Integer.parseInt(selectedItem.get("ID")));
         startActivity(intent);
     }
 }

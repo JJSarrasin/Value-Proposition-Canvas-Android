@@ -11,6 +11,23 @@
     <string name="canvas_edittext_title">Title</string>
     <string name="canvas_edittext_description">Description</string>
 
+    <!-- Elements -->
+    <string name="elements_section_product">Product</string>
+    <string name="elements_section_customer">Customer</string>
+    <string name="elements_item_1">Products &amp; Services</string>
+    <string name="elements_item_2">Gain Creators</string>
+    <string name="elements_item_3">Pain Relievers</string>
+    <string name="elements_item_4">Customer Job(s)</string>
+    <string name="elements_item_5">Gains</string>
+    <string name="elements_item_6">Pains</string>
+    <string name="elements_delete_confirmation">Do you really want to delete this Value Proposition Canvas ?</string>
+
+    <!-- Idea -->
+    <string name="idea_title_new">New Post-it</string>
+    <string name="idea_title_edit">Edit Post-it</string>
+
+    <!-- Export -->
+    <string name="export_share_title">Share Value Proposition Canvas</string>
 
     <!-- Action buttons -->
     <string name="action_add">Add</string>
