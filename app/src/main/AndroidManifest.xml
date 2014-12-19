@@ -36,6 +36,7 @@
 
         <activity
             android:name=".ui.IdeaActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".ui.IdeasListActivity" />
 
         <provider

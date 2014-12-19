@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:minWidth="200dp"
-    android:minHeight="200dp"
+    android:minHeight="230dp"
     android:gravity="center"
+    android:textSize="16sp"
+    android:textStyle="bold"
     android:background="@drawable/ideaslist_item_postit_yellow" />

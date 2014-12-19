@@ -22,9 +22,15 @@
     <string name="elements_item_6">Pains</string>
     <string name="elements_delete_confirmation">Do you really want to delete this Value Proposition Canvas ?</string>
 
+    <!-- IdeaList -->
+    <string name="idealist_idea_empty">Create a new idea</string>
+
     <!-- Idea -->
     <string name="idea_title_new">New Post-it</string>
     <string name="idea_title_edit">Edit Post-it</string>
+    <string name="idea_delete_confirmation">Do you really want to delete this idea ?</string>
+    <string name="idea_question_empty">Create a new question</string>
+    <string name="idea_content_hint">Your proposition ?</string>
 
     <!-- Export -->
     <string name="export_share_title">Share Value Proposition Canvas</string>

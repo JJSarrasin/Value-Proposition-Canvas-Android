@@ -1,6 +1,7 @@
 package ch.hesso.valueproposition.ui;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,9 +16,10 @@ import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.utils.Constants;
 
 public class IdeaFragment extends Fragment {
-    private EditText titleEditText;
-    private EditText descriptionEditText;
-    private int currentCanvasId = 0;
+    private EditText contentEditText;
+    private int elementTypeId;
+    private int currentCanvasId;
+    private int currentIdeaId;
 
     public static IdeaFragment newInstance() {
         return new IdeaFragment();
@@ -30,58 +32,69 @@ public class IdeaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        View rootView = inflater.inflate(R.layout.fragment_canvas, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_idea, container, false);
 
-
-        titleEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_title);
-        descriptionEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_description);
+        contentEditText = (EditText) rootView.findViewById(R.id.idea_edittext_content);
 
         Bundle args = getArguments();
         if (args != null) {
             currentCanvasId = args.getInt(Constants.EXTRA_CANVAS_ID);
+            currentIdeaId = args.getInt(Constants.EXTRA_IDEA_ID);
+            elementTypeId = args.getInt(Constants.EXTRA_ELEMENT_TYPE_ID);
 
-            if (currentCanvasId != 0) {
-                //TODO:CG Charger from DB + afficher dans les champs
+            if (currentIdeaId != 0) {
+                //TODO:CG Charger Idea de la DB + afficher dans le champ
 
-                titleEditText.setText("TITLE");
-                descriptionEditText.setText("DESCRIPTION");
-                getActivity().setTitle(R.string.canvas_title_edit);
+                contentEditText.setText("IDEA X");
+                contentEditText.setSelection(contentEditText.getText().length());
+                getActivity().setTitle(R.string.idea_title_edit);
             }
+            else
+                getActivity().setTitle(R.string.idea_title_new);
         }
-        else
-            getActivity().setTitle(R.string.canvas_title_new);
 
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_canvas, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_idea, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            saveForm();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_add_question:
+                //TODO
+                return true;
+            case R.id.action_delete:
+                new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.idea_delete_confirmation)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //TODO:CG: Effacer de la BD
+                            getActivity().finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    }).create().show();
+                return true;
+            case R.id.action_save:
+                saveForm();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void saveForm() {
-        String title = titleEditText.getText().toString();
-        String description = descriptionEditText.getText().toString();
+        String content = contentEditText.getText().toString();
 
-        //TODO:CG (Save title + description)
-
-        if (currentCanvasId == 0) {
-            Intent intent = new Intent(getActivity(), ElementsActivity.class);
-            //TODO:CG Transmettre l'id de l'objet à l'activité suivante dans le cas d'une création
-            intent.putExtra(Constants.EXTRA_CANVAS_ID, 12345);
-            startActivity(intent);
-        }
+        //TODO:CG (Create/Update content)
 
         getActivity().finish();
     }

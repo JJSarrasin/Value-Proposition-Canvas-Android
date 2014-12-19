@@ -12,7 +12,9 @@ public class IdeaActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generic);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new HomeFragment()).commit();
+            IdeaFragment ideaFragment = IdeaFragment.newInstance();
+            ideaFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.container, ideaFragment).commit();
         }
     }
 }

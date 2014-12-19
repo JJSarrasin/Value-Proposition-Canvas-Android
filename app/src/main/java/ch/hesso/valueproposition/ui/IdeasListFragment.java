@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.utils.Constants;
@@ -70,11 +68,13 @@ public class IdeasListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        TextView selectedItem = (TextView) l.getItemAtPosition(position);
+        //TODO:CG Gérer la récupération de l'id depuis la position
+        //Cursor c = (Cursor) getListAdapter().getItem(position);
+        //String url = c.getString(c.getColumnIndex("_id"));
 
         Intent intent = new Intent(getActivity(), IdeaActivity.class);
         intent.putExtra(Constants.EXTRA_CANVAS_ID, currentCanvasId);
-        intent.putExtra(Constants.EXTRA_ELEMENT_ID, Integer.parseInt(selectedItem.getTag().toString()));
+        intent.putExtra(Constants.EXTRA_IDEA_ID, 1); //TODO:CG Remplacer
         intent.putExtra(Constants.EXTRA_ELEMENT_TYPE_ID, elementTypeId);
         startActivity(intent);
     }

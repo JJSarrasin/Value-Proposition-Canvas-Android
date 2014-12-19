@@ -1,29 +1,45 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:orientation="vertical"
+    android:divider="@drawable/spacer_medium"
+    android:padding="@dimen/form_spacing"
+    android:showDividers="middle">
 
-    <ListView
-        android:id="@id/android:list"
+    <EditText
+        android:id="@+id/idea_edittext_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/home_canvas_empty" />
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_action_add"
-        fab:fab_colorNormal="@color/theme_primary"
-        fab:fab_colorPressed="@color/theme_primary_dark" />
-</FrameLayout>
+        android:hint="@string/idea_content_hint"
+        android:minHeight="230dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/ideaslist_item_postit_yellow" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_weight="1">
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@id/android:empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/idea_question_empty" />
+    </FrameLayout>
+</LinearLayout>

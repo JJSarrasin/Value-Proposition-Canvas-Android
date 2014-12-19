@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/home_canvas_empty" />
+        android:text="@string/idealist_idea_empty" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_add"

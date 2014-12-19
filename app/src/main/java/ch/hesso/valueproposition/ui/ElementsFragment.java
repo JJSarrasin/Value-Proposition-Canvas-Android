@@ -77,7 +77,6 @@ public class ElementsFragment extends Fragment {
                             // User cancelled the dialog
                         }
                     }).create().show();
-
                 return true;
         }
 
