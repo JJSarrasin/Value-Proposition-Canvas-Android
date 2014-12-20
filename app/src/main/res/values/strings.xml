@@ -31,6 +31,10 @@
     <string name="idea_delete_confirmation">Do you really want to delete this idea ?</string>
     <string name="idea_question_empty">Create a new question</string>
     <string name="idea_content_hint">Your proposition ?</string>
+    <string name="idea_question_title_new">New question</string>
+    <string name="idea_question_title_edit">Edit/Remove question</string>
+    <string name="idea_question_edit_hint">Your question</string>
+    <string name="idea_question_edit_delete">Delete</string>
 
     <!-- Export -->
     <string name="export_share_title">Share Value Proposition Canvas</string>
