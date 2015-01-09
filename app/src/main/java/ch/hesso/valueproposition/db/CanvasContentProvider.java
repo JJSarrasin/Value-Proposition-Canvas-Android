@@ -160,7 +160,6 @@ public class CanvasContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        Log.d(TAG, "uri : " + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case CANVAS:
                 qb.setTables(DbObjects.Canvas.TABLE);
@@ -174,21 +173,21 @@ public class CanvasContentProvider extends ContentProvider {
                 break;
             case QUESTIONS:
                 qb.setTables(DbObjects.Questions.TABLE);
-                qb.setProjectionMap(sCanvasProjectionMap);
+                qb.setProjectionMap(sQuestionsProjectionMap);
                 break;
             case QUESTION_ID:
                 qb.setTables(DbObjects.Questions.TABLE);
-                qb.setProjectionMap(sCanvasProjectionMap);
+                qb.setProjectionMap(sQuestionsProjectionMap);
                 qb.appendWhere(DbObjects.Questions._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION));
                 break;
             case IDEAS:
                 qb.setTables(DbObjects.Ideas.TABLE);
-                qb.setProjectionMap(sCanvasProjectionMap);
+                qb.setProjectionMap(sIdeasProjectionMap);
                 break;
             case IDEA_ID:
                 qb.setTables(DbObjects.Ideas.TABLE);
-                qb.setProjectionMap(sCanvasProjectionMap);
+                qb.setProjectionMap(sIdeasProjectionMap);
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION));
                 break;
