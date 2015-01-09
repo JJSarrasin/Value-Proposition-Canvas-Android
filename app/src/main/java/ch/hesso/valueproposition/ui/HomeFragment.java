@@ -40,6 +40,12 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
         fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CanvasActivity.class));
+            }
+        });
 
         return rootView;
     }
