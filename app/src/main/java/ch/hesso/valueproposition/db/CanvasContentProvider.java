@@ -167,20 +167,28 @@ public class CanvasContentProvider extends ContentProvider {
                 qb.setProjectionMap(sCanvasProjectionMap);
                 break;
             case CANVAS_ID:
+                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
                 break;
             case QUESTIONS:
-                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setTables(DbObjects.Questions.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
+                break;
             case QUESTION_ID:
+                qb.setTables(DbObjects.Questions.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
                 qb.appendWhere(DbObjects.Questions._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Questions.QUESTION_ID_PATH_POSITION));
                 break;
             case IDEAS:
-                qb.setTables(DbObjects.Canvas.TABLE);
+                qb.setTables(DbObjects.Ideas.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
+                break;
             case IDEA_ID:
+                qb.setTables(DbObjects.Ideas.TABLE);
+                qb.setProjectionMap(sCanvasProjectionMap);
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION));
                 break;
