@@ -109,7 +109,7 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                if (isEditMode) return true;
+                if (!isEditMode) return true;
                 new AlertDialog.Builder(getActivity())
                         .setMessage(R.string.idea_delete_confirmation)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -131,7 +131,8 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Uri questionUri = Uri.withAppendedPath(DbObjects.Questions.CONTENT_URI, id + "");
-        Cursor c = getActivity().getContentResolver().query(questionUri, null, null, null, null);
+        Cursor c = getActivity().getContentResolver().query(questionUri, DbObjects.Questions.PROJECTION_QUESTIONS, null, null, null);
+        c.moveToFirst();
 
         final EditText input = new EditText(getActivity());
         input.setText(c.getString(c.getColumnIndex(DbObjects.Questions.COL_DESC)));
