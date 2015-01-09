@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -159,11 +160,12 @@ public class CanvasContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
+        Log.d(TAG, "uri : " + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case CANVAS:
                 qb.setTables(DbObjects.Canvas.TABLE);
                 qb.setProjectionMap(sCanvasProjectionMap);
+                break;
             case CANVAS_ID:
                 qb.appendWhere(DbObjects.Canvas._ID + "=" +
                         uri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
