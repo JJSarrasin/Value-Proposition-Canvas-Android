@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -71,7 +70,7 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
 
         if (!isEditMode) getActivity().setTitle(R.string.idea_title_new);
 
-        mQuestionsAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, new String[]{DbObjects.Questions.COL_DESC}, new int[]{android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        mQuestionsAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, new String[]{DbObjects.Questions.COL_DESC}, new int[]{android.R.id.text1}, 0);
         setListAdapter(mQuestionsAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
@@ -108,6 +107,9 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
             case R.id.action_delete:
                 if (!isEditMode) return true;
                 new AlertDialog.Builder(getActivity())

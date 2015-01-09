@@ -1,5 +1,6 @@
 package ch.hesso.valueproposition.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,17 +12,20 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ResourceCursorAdapter;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import ch.hesso.valueproposition.R;
-import ch.hesso.valueproposition.adapters.CanvasListAdapter;
+import ch.hesso.valueproposition.db.DbObjects;
 import ch.hesso.valueproposition.db.DbObjects.Canvas;
 
 public class HomeFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private CanvasListAdapter mCursorAdapter;
+    private ResourceCursorAdapter mCursorAdapter;
 
     public HomeFragment() {
     }
@@ -30,7 +34,28 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mCursorAdapter = new CanvasListAdapter(getActivity(), R.layout.element_home_card, null);
+        //mCursorAdapter = new CanvasListAdapter(getActivity(), R.layout.element_home_card, null);
+        mCursorAdapter = new ResourceCursorAdapter(getActivity(), R.layout.element_home_card, null, 0) {
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                TextView titleTextView = (TextView) view.findViewById(R.id.home_card_element_title);
+                titleTextView.setText(cursor.getString(cursor.getColumnIndex(DbObjects.Canvas.COL_TITLE)));
+
+                TextView descTextView = (TextView) view.findViewById(R.id.home_card_element_description);
+                descTextView.setText(cursor.getString(cursor.getColumnIndex(DbObjects.Canvas.COL_DESC)));
+
+                final String id = cursor.getString(cursor.getColumnIndex(DbObjects.Canvas._ID));
+                ImageButton editBtn = (ImageButton) view.findViewById(R.id.home_card_element_edit);
+                editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), CanvasActivity.class);
+                        intent.setData(Uri.withAppendedPath(DbObjects.Canvas.CONTENT_URI, id));
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
         setListAdapter(mCursorAdapter);
         getLoaderManager().initLoader(0, null, this);
 

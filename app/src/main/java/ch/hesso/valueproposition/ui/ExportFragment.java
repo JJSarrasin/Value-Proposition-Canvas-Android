@@ -84,32 +84,37 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_share) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
 
-            //TODO:YB Passer le bitmap au lieu du bitmap vide de 1x1
-            Bitmap icon = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-            //Bitmap icon = myBitmap;
+            case R.id.action_share:
 
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/jpeg");
+                //TODO:YB Passer le bitmap au lieu du bitmap vide de 1x1
+                Bitmap icon = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+                //Bitmap icon = myBitmap;
 
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "title");
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            Uri uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/jpeg");
 
-            try {
-                OutputStream outstream = getActivity().getContentResolver().openOutputStream(uri);
-                icon.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
-                outstream.close();
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "title");
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                Uri uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-            share.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(Intent.createChooser(share, getString(R.string.export_share_title)));
+                try {
+                    OutputStream outstream = getActivity().getContentResolver().openOutputStream(uri);
+                    icon.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+                    outstream.close();
+                } catch (Exception e) {
+                    System.err.println(e.toString());
+                }
 
-            return true;
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(share, getString(R.string.export_share_title)));
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
