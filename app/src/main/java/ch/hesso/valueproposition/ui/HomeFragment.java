@@ -2,6 +2,7 @@ package ch.hesso.valueproposition.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -11,21 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.Map;
-
 import ch.hesso.valueproposition.R;
+import ch.hesso.valueproposition.adapters.CanvasListAdapter;
 import ch.hesso.valueproposition.db.DbObjects.Canvas;
-import ch.hesso.valueproposition.utils.Constants;
 
 public class HomeFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final static String[] PROJECTION = {Canvas._ID, Canvas.COL_TITLE, Canvas.COL_DESC, Canvas.COL_CREATED_AT};
-
-    private SimpleCursorAdapter mCursorAdapter;
+    private CanvasListAdapter mCursorAdapter;
 
     public HomeFragment() {
     }
@@ -34,7 +30,7 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.element_home_card, null, PROJECTION, new int[]{R.id.home_card_element_title, R.id.home_card_element_description}, 0);
+        mCursorAdapter = new CanvasListAdapter(getActivity(), R.layout.element_home_card, null);
         setListAdapter(mCursorAdapter);
         getLoaderManager().initLoader(0, null, this);
 
@@ -51,16 +47,14 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
     }
 
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Map<String, String> selectedItem = (Map<String, String>) l.getItemAtPosition(position);
-
         Intent intent = new Intent(getActivity(), ElementsActivity.class);
-        intent.putExtra(Constants.EXTRA_CANVAS_ID, Integer.parseInt(selectedItem.get("ID")));
+        intent.setData(Uri.withAppendedPath(Canvas.CONTENT_URI, id + ""));
         startActivity(intent);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), Canvas.CONTENT_URI, PROJECTION, null, null, null);
+        return new CursorLoader(getActivity(), Canvas.CONTENT_URI, Canvas.PROJECTION_CANVAS, null, null, null);
     }
 
 

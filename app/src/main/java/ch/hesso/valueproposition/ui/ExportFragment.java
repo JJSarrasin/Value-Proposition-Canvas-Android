@@ -2,11 +2,15 @@ package ch.hesso.valueproposition.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,10 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hesso.valueproposition.R;
-import ch.hesso.valueproposition.utils.Constants;
+import ch.hesso.valueproposition.db.DbObjects;
+import ch.hesso.valueproposition.utils.Constants.Elements;
 
-public class ExportFragment extends Fragment {
-    private int currentCanvasId = 0;
+public class ExportFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+
+    private static final int LOADER_CANVAS = 1;
+    private static final int LOADER_IDEAS = 2;
+
+    private Menu mMenu;
+    private boolean isGenerated;
+    private int mLoadedCount = 0;
+
+    private Uri mCanvasUri;
+    /**
+     * Pour YB : éléments du canvas
+     */
+    private String mCanvasTitle;
+    private String mCanvasDesc;
+    private long mCanvasCreatedAt;
+
+    /**
+     * Pour YB : Lists contenant la description de l'Idea
+     */
     private List<String> productsServiceList = new ArrayList<>();
     private List<String> gainCreatorsList = new ArrayList<>();
     private List<String> painRelieversList = new ArrayList<>();
@@ -41,50 +65,11 @@ public class ExportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+        mCanvasUri = getActivity().getIntent().getData();
+        getLoaderManager().initLoader(LOADER_CANVAS, null, this);
+        getLoaderManager().initLoader(LOADER_IDEAS, null, this);
+
         View rootView = inflater.inflate(R.layout.fragment_export, container, false);
-
-        Bundle args = getArguments();
-        if (args != null) {
-            currentCanvasId = args.getInt(Constants.EXTRA_CANVAS_ID);
-
-            //TODO:CG Charger le nom du canvas et le mettre en titre
-            getActivity().setTitle("TODO:TITLE_FROM_DB");
-
-            //TODO:CG Charger les listes pour chaque element de ce canvas et les fournir à YB au lieu des fake data
-
-            // Fill List with fake data
-            productsServiceList.add("Idea 1");
-            productsServiceList.add("Idea 2");
-            productsServiceList.add("Idea 3");
-            productsServiceList.add("Idea 4");
-
-            gainCreatorsList.add("Idea 1");
-            gainCreatorsList.add("Idea 2");
-            gainCreatorsList.add("Idea 3");
-            gainCreatorsList.add("Idea 4");
-
-            painRelieversList.add("Idea 1");
-            painRelieversList.add("Idea 2");
-            painRelieversList.add("Idea 3");
-            painRelieversList.add("Idea 4");
-
-            customerJobsList.add("Idea 1");
-            customerJobsList.add("Idea 2");
-            customerJobsList.add("Idea 3");
-            customerJobsList.add("Idea 4");
-
-            gainsList.add("Idea 1");
-            gainsList.add("Idea 2");
-            gainsList.add("Idea 3");
-            gainsList.add("Idea 4");
-
-            painsList.add("Idea 1");
-            painsList.add("Idea 2");
-            painsList.add("Idea 3");
-            painsList.add("Idea 4");
-
-            //TODO: YB Traitement de l'image avec les données ci-dessus
-        }
 
         return rootView;
     }
@@ -92,6 +77,8 @@ public class ExportFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.menu_export, menu);
+        mMenu = menu;
+        menu.findItem(R.id.action_share).setVisible(isGenerated);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -126,5 +113,79 @@ public class ExportFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void generateBitmap() {
+        //TODO: YB Création de l'image avec les données dans les lists
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader loader = null;
+        switch (id) {
+            case LOADER_CANVAS:
+                loader = new CursorLoader(getActivity(), mCanvasUri, DbObjects.Canvas.PROJECTION_CANVAS, null, null, null);
+                break;
+            case LOADER_IDEAS:
+                loader = new CursorLoader(getActivity(), DbObjects.Ideas.CONTENT_URI, DbObjects.Ideas.PROJECTION_IDEAS, DbObjects.Ideas.COL_CANVAS + "=?", new String[]{mCanvasUri.getLastPathSegment()}, null);
+                break;
+        }
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_CANVAS:
+                if (data.moveToFirst()) {
+                    mCanvasTitle = data.getString(data.getColumnIndex(DbObjects.Canvas.COL_TITLE));
+                    mCanvasDesc = data.getString(data.getColumnIndex(DbObjects.Canvas.COL_DESC));
+                    mCanvasCreatedAt = data.getLong(data.getColumnIndex(DbObjects.Canvas.COL_CREATED_AT));
+                    getActivity().setTitle(mCanvasTitle);
+                }
+                mLoadedCount++;
+                break;
+            case LOADER_IDEAS:
+                if (data.moveToFirst()) {
+                    do {
+                        String description = data.getString(data.getColumnIndex(DbObjects.Ideas.COL_DESC));
+                        Elements element = Elements.values()[data.getInt(data.getColumnIndex(DbObjects.Ideas.COL_ELEMENT))];
+                        switch (element) {
+                            case CUSTOMER_GAINS:
+                                gainsList.add(description);
+                                break;
+                            case CUSTOMER_PAINS:
+                                painsList.add(description);
+                                break;
+                            case CUSTOMERS_JOBS:
+                                customerJobsList.add(description);
+                                break;
+                            case GAIN_CREATORS:
+                                gainCreatorsList.add(description);
+                                break;
+                            case PAIN_RELIEVERS:
+                                painRelieversList.add(description);
+                                break;
+                            case PRODUCTS_SERVICES:
+                                productsServiceList.add(description);
+                                break;
+                        }
+                    } while (data.moveToNext());
+                }
+                mLoadedCount++;
+                break;
+        }
+        if (mLoadedCount > 1) {
+            generateBitmap();
+            isGenerated = true;
+            if (mMenu != null) {
+                mMenu.findItem(R.id.action_share).setVisible(isGenerated);
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
     }
 }

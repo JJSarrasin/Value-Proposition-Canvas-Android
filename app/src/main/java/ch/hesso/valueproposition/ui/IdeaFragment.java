@@ -1,35 +1,39 @@
 package ch.hesso.valueproposition.ui;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.text.Editable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.hesso.valueproposition.R;
+import ch.hesso.valueproposition.db.DbObjects;
 import ch.hesso.valueproposition.utils.Constants;
 
-public class IdeaFragment extends ListFragment {
+public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private EditText contentEditText;
-    private int elementTypeId;
-    private int currentCanvasId;
-    private int currentIdeaId;
+    private Uri mIdeaUri;
+    private String mCanvasId;
+    private Constants.Elements mElement;
+    private SimpleCursorAdapter mQuestionsAdapter;
+    private boolean isEditMode;
 
     public static IdeaFragment newInstance() {
         return new IdeaFragment();
@@ -47,31 +51,28 @@ public class IdeaFragment extends ListFragment {
         contentEditText = (EditText) rootView.findViewById(R.id.idea_edittext_content);
 
         Bundle args = getArguments();
+
         if (args != null) {
-            currentCanvasId = args.getInt(Constants.EXTRA_CANVAS_ID);
-            currentIdeaId = args.getInt(Constants.EXTRA_IDEA_ID);
-            elementTypeId = args.getInt(Constants.EXTRA_ELEMENT_TYPE_ID);
+            mElement = (Constants.Elements) args.getSerializable(Constants.EXTRA_ELEMENT_TYPE_ID);
+            mCanvasId = args.getString(Constants.EXTRA_CANVAS_ID);
+            getLoaderManager().initLoader(0, null, this);
+        }
 
-            if (currentIdeaId != 0) {
-                //TODO:CG Charger Idea de la DB + afficher dans le champ
-
-                contentEditText.setText("IDEA X");
+        mIdeaUri = getActivity().getIntent().getData();
+        if (mIdeaUri != null) {
+            Cursor c = getActivity().getContentResolver().query(mIdeaUri, DbObjects.Ideas.PROJECTION_IDEAS, null, null, null);
+            if (c.moveToFirst()) {
+                isEditMode = true;
+                contentEditText.setText(c.getString(c.getColumnIndex(DbObjects.Ideas.COL_DESC)));
                 contentEditText.setSelection(contentEditText.getText().length());
                 getActivity().setTitle(R.string.idea_title_edit);
             }
-            else
-                getActivity().setTitle(R.string.idea_title_new);
         }
 
-        //TODO:CG Récupération des questions pour le elementTypeId donné (nice to have: limité au canvas)
-        List<String> questionList = new ArrayList<>();
-        questionList.add("Question 1");
-        questionList.add("Question 2");
-        questionList.add("Question 3");
-        questionList.add("Question 4");
-        questionList.add("Question 5");
+        if (!isEditMode) getActivity().setTitle(R.string.idea_title_new);
 
-        setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, questionList));
+        mQuestionsAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, new String[]{DbObjects.Questions.COL_DESC}, new int[]{android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        setListAdapter(mQuestionsAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
         fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
@@ -81,14 +82,17 @@ public class IdeaFragment extends ListFragment {
                 final EditText input = new EditText(getActivity());
 
                 new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.idea_question_title_new)
-                    .setView(input)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            String question = input.getText().toString();
-                            //TODO:CG Ajouter question dans BD
-                        }
-                    }).setNegativeButton(android.R.string.cancel, null).show();
+                        .setTitle(R.string.idea_question_title_new)
+                        .setView(input)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String question = input.getText().toString();
+                                ContentValues values = new ContentValues(2);
+                                values.put(DbObjects.Questions.COL_DESC, question);
+                                values.put(DbObjects.Questions.COL_ELEMENT, mElement.ordinal());
+                                getActivity().getContentResolver().insert(DbObjects.Questions.CONTENT_URI, values);
+                            }
+                        }).setNegativeButton(android.R.string.cancel, null).show();
             }
         });
 
@@ -105,15 +109,16 @@ public class IdeaFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
+                if (isEditMode) return true;
                 new AlertDialog.Builder(getActivity())
-                    .setMessage(R.string.idea_delete_confirmation)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //TODO:CG: Effacer de la BD
-                            getActivity().finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null).create().show();
+                        .setMessage(R.string.idea_delete_confirmation)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getActivity().getContentResolver().delete(mIdeaUri, null, null);
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).create().show();
                 return true;
             case R.id.action_save:
                 saveIdea();
@@ -125,36 +130,56 @@ public class IdeaFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        /*
-        //TODO:CG Gérer la récupération de l'id depuis la position
-        //Cursor c = (Cursor) getListAdapter().getItem(position);
-        //String url = c.getString(c.getColumnIndex("_id"));
-        */
-        final int questionId = 1;
+        final Uri questionUri = Uri.withAppendedPath(DbObjects.Questions.CONTENT_URI, id + "");
+        Cursor c = getActivity().getContentResolver().query(questionUri, null, null, null, null);
+
         final EditText input = new EditText(getActivity());
-        input.setText("toto"); //TODO:CG Remplacer
+        input.setText(c.getString(c.getColumnIndex(DbObjects.Questions.COL_DESC)));
         input.setSelection(input.getText().length());
 
         new AlertDialog.Builder(getActivity())
-            .setTitle(R.string.idea_question_title_edit)
-            .setView(input)
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String question = input.getText().toString();
-                    //TODO:CG Màj question d'après son questionId et le string question
-                }
-            }).setNegativeButton(R.string.idea_question_edit_delete, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    //TODO:CG Supprimer question d'après son questionId
-                }
+                .setTitle(R.string.idea_question_title_edit)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        final String question = input.getText().toString();
+                        ContentValues values = new ContentValues(1);
+                        values.put(DbObjects.Questions.COL_DESC, question);
+                        getActivity().getContentResolver().update(questionUri, values, null, null);
+                    }
+                }).setNegativeButton(R.string.idea_question_edit_delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                getActivity().getContentResolver().delete(questionUri, null, null);
+            }
         }).show();
     }
 
     private void saveIdea() {
         String content = contentEditText.getText().toString();
-
-        //TODO:CG (Create/Update content)
-
+        ContentValues values = new ContentValues(2);
+        values.put(DbObjects.Ideas.COL_DESC, content);
+        values.put(DbObjects.Ideas.COL_ELEMENT, mElement.ordinal());
+        values.put(DbObjects.Ideas.COL_CANVAS, mCanvasId);
+        if (isEditMode) {
+            getActivity().getContentResolver().update(mIdeaUri, values, null, null);
+        } else {
+            getActivity().getContentResolver().insert(DbObjects.Ideas.CONTENT_URI, values);
+        }
         getActivity().finish();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(), DbObjects.Questions.CONTENT_URI, DbObjects.Questions.PROJECTION_QUESTIONS, DbObjects.Questions.COL_ELEMENT + "=?", new String[]{mElement.ordinal() + ""}, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.moveToFirst()) mQuestionsAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mQuestionsAdapter.swapCursor(null);
     }
 }

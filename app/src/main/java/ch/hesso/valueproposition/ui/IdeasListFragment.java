@@ -1,25 +1,32 @@
 package ch.hesso.valueproposition.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.hesso.valueproposition.R;
+import ch.hesso.valueproposition.db.DbObjects;
 import ch.hesso.valueproposition.utils.Constants;
 
-public class IdeasListFragment extends ListFragment {
-    private int elementTypeId;
-    private int currentCanvasId;
+public class IdeasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private Uri mCanvasUri;
+    private Constants.Elements mElement;
+    private SimpleCursorAdapter mCursorAdapter;
 
     public static IdeasListFragment newInstance() {
         return new IdeasListFragment();
@@ -33,23 +40,17 @@ public class IdeasListFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_ideaslist, container, false);
 
         Bundle args = getArguments();
-        if (args != null) {
-            currentCanvasId = args.getInt(Constants.EXTRA_CANVAS_ID);
-            elementTypeId = args.getInt(Constants.EXTRA_ELEMENT_TYPE_ID);
-
-            int titleResourceId = getResources().getIdentifier("elements_item_" + elementTypeId, "string", getActivity().getPackageName());
+        mCanvasUri = getActivity().getIntent().getData();
+        if (mCanvasUri != null && args != null) {
+            Log.d("IdeasListFrag", "mcanvasuri " + mCanvasUri.toString());
+            mElement = (Constants.Elements)args.getSerializable(Constants.EXTRA_ELEMENT_TYPE_ID);
+            getLoaderManager().initLoader(0, null, this);
+            int titleResourceId = getResources().getIdentifier("elements_item_" + (mElement.ordinal() + 1), "string", getActivity().getPackageName());
             getActivity().setTitle(titleResourceId);
         }
 
-        //TODO:CG Récupération des données existantes pour le currentCanvasId/elementTypeId donné
-        List<String> list = new ArrayList<>();
-        list.add("IDEA 1");
-        list.add("IDEA 2");
-        list.add("IDEA 3");
-        list.add("IDEA 4");
-        list.add("IDEA 5");
-
-        setListAdapter(new ArrayAdapter<>(getActivity(), R.layout.element_ideaslist, list));
+        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.element_ideaslist, null, new String[] {DbObjects.Ideas.COL_DESC}, new int[] {android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);// new IdeasListAdapter(getActivity(), R.layout.element_ideaslist, null);
+        setListAdapter(mCursorAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
         fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
@@ -57,8 +58,8 @@ public class IdeasListFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), IdeaActivity.class);
-                intent.putExtra(Constants.EXTRA_CANVAS_ID, currentCanvasId);
-                intent.putExtra(Constants.EXTRA_ELEMENT_TYPE_ID, elementTypeId);
+                intent.putExtra(Constants.EXTRA_CANVAS_ID, mCanvasUri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
+                intent.putExtra(Constants.EXTRA_ELEMENT_TYPE_ID, mElement);
                 startActivity(intent);
             }
         });
@@ -68,14 +69,28 @@ public class IdeasListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //TODO:CG Gérer la récupération de l'id depuis la position
-        //Cursor c = (Cursor) getListAdapter().getItem(position);
-        //String url = c.getString(c.getColumnIndex("_id"));
-
         Intent intent = new Intent(getActivity(), IdeaActivity.class);
-        intent.putExtra(Constants.EXTRA_CANVAS_ID, currentCanvasId);
-        intent.putExtra(Constants.EXTRA_IDEA_ID, 1); //TODO:CG Remplacer
-        intent.putExtra(Constants.EXTRA_ELEMENT_TYPE_ID, elementTypeId);
+        intent.setData(Uri.withAppendedPath(DbObjects.Ideas.CONTENT_URI, id + ""));
+        intent.putExtra(Constants.EXTRA_CANVAS_ID, mCanvasUri.getPathSegments().get(DbObjects.Canvas.CANVAS_ID_PATH_POSITION));
+        intent.putExtra(Constants.EXTRA_ELEMENT_TYPE_ID, mElement);
         startActivity(intent);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(), DbObjects.Ideas.CONTENT_URI, DbObjects.Ideas.PROJECTION_IDEAS, DbObjects.Ideas.COL_CANVAS + "=? AND " + DbObjects.Ideas.COL_ELEMENT + "=?", new String[]{mCanvasUri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION), mElement.ordinal() + ""}, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.moveToFirst()) {
+            mCursorAdapter.swapCursor(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
+
     }
 }

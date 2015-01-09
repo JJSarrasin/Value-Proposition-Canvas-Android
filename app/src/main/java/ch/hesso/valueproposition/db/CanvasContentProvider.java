@@ -15,6 +15,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Random;
+
+import ch.hesso.valueproposition.utils.Constants;
 
 public class CanvasContentProvider extends ContentProvider {
 
@@ -112,6 +115,16 @@ public class CanvasContentProvider extends ContentProvider {
                     DbObjects.Ideas.COL_CANVAS + " INTEGER, " +
                     DbObjects.Ideas.COL_ELEMENT + " INTEGER, " +
                     DbObjects.Ideas.COL_CREATED_AT + " INTEGER);");
+
+            // TODO : real questions here
+            for (int i = 1; i < 40; i++) {
+                ContentValues values = new ContentValues(2);
+                values.put(DbObjects.Questions.COL_DESC, "question " + i);
+                Random r = new Random();
+                int element = r.nextInt(Constants.Elements.values().length);
+                values.put(DbObjects.Questions.COL_ELEMENT, element);
+                long id = db.insert(DbObjects.Questions.TABLE, null, values);
+            }
         }
 
         @Override
@@ -273,6 +286,7 @@ public class CanvasContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
         if (insertedId == -1) throw new SQLException("Failed to insert row for " + uri);
+
         getContext().getContentResolver().notifyChange(insertedUri, null);
         return insertedUri;
     }

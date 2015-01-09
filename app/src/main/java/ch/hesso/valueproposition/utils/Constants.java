@@ -2,7 +2,6 @@ package ch.hesso.valueproposition.utils;
 
 public class Constants {
     public static String EXTRA_CANVAS_ID = "EXTRA_CANVAS_ID";
-    public static String EXTRA_IDEA_ID = "EXTRA_IDEA_ID";
     public static String EXTRA_ELEMENT_TYPE_ID = "EXTRA_ELEMENT_TYPE_ID";
 
     public static enum Elements {

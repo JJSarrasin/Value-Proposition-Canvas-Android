@@ -77,6 +77,8 @@ public final class DbObjects {
         public static final String COL_DESC = "description";
         public static final String COL_CREATED_AT = "created_at";
 
+        public final static String[] PROJECTION_CANVAS = {_ID, COL_TITLE, COL_DESC, COL_CREATED_AT};
+
     }
 
     public static final class Questions implements BaseColumns {
@@ -145,6 +147,8 @@ public final class DbObjects {
         public static final String COL_DESC = "content";
         public static final String COL_ELEMENT = "element";
         public static final String COL_CREATED_AT = "created_at";
+
+        public final static String[] PROJECTION_QUESTIONS = {_ID, COL_DESC, COL_ELEMENT, COL_CREATED_AT};
 
     }
 
@@ -216,6 +220,8 @@ public final class DbObjects {
         public static final String COL_CANVAS = "canvas_id";
         public static final String COL_CREATED_AT = "created_at";
 
+
+        public final static String[] PROJECTION_IDEAS = {_ID, COL_DESC, COL_CANVAS, COL_ELEMENT, Canvas.COL_CREATED_AT};
     }
 
 }

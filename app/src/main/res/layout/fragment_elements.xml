@@ -62,7 +62,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_productsservices"
                         android:text="@string/elements_item_1"
-                        android:tag="1" />
+                        android:tag="0" />
 
                     <Button
                         android:id="@+id/elements_imagebutton_gaincreators"
@@ -72,7 +72,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_gaincreators"
                         android:text="@string/elements_item_2"
-                        android:tag="2" />
+                        android:tag="1" />
 
                     <Button
                         android:id="@+id/elements_imagebutton_painrelievers"
@@ -82,7 +82,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_painrelievers"
                         android:text="@string/elements_item_3"
-                        android:tag="3" />
+                        android:tag="2" />
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -142,7 +142,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_customerjobs"
                         android:text="@string/elements_item_4"
-                        android:tag="4" />
+                        android:tag="3" />
 
                     <Button
                         android:id="@+id/elements_imagebutton_gains"
@@ -152,7 +152,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_gains"
                         android:text="@string/elements_item_5"
-                        android:tag="5" />
+                        android:tag="4" />
 
                     <Button
                         android:id="@+id/elements_imagebutton_pains"
@@ -162,7 +162,7 @@
                         android:background="@null"
                         android:drawableTop="@drawable/ic_item_pains"
                         android:text="@string/elements_item_6"
-                        android:tag="6" />
+                        android:tag="5" />
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>

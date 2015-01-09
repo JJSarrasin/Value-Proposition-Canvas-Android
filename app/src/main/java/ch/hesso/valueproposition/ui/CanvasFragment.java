@@ -1,6 +1,9 @@
 package ch.hesso.valueproposition.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import ch.hesso.valueproposition.R;
-import ch.hesso.valueproposition.utils.Constants;
+import ch.hesso.valueproposition.db.DbObjects;
+import ch.hesso.valueproposition.db.DbObjects.Canvas;
 
 public class CanvasFragment extends Fragment {
     private EditText titleEditText;
     private EditText descriptionEditText;
-    private int currentCanvasId = 0;
+    private boolean isEditMode;
+    private Uri mCanvasUri;
 
     public static CanvasFragment newInstance() {
         return new CanvasFragment();
@@ -35,20 +40,19 @@ public class CanvasFragment extends Fragment {
         titleEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_title);
         descriptionEditText = (EditText) rootView.findViewById(R.id.canvas_edittext_description);
 
-        Bundle args = getArguments();
-        if (args != null) {
-            currentCanvasId = args.getInt(Constants.EXTRA_CANVAS_ID);
+        mCanvasUri = getActivity().getIntent().getData();
 
-            if (currentCanvasId != 0) {
-                //TODO:CG Charger from DB + afficher dans les champs
-
-                titleEditText.setText("TITLE");
-                descriptionEditText.setText("DESCRIPTION");
+        if (mCanvasUri != null) {
+            Cursor c = getActivity().getContentResolver().query(mCanvasUri, new String[]{DbObjects.Canvas._ID, DbObjects.Canvas.COL_TITLE, DbObjects.Canvas.COL_DESC}, null, null, null);
+            if (c.moveToFirst()) {
+                isEditMode = true;
                 getActivity().setTitle(R.string.canvas_title_edit);
+                titleEditText.setText(c.getString(c.getColumnIndex(DbObjects.Canvas.COL_TITLE)));
+                descriptionEditText.setText(c.getString(c.getColumnIndex(DbObjects.Canvas.COL_DESC)));
             }
         }
-        else
-            getActivity().setTitle(R.string.canvas_title_new);
+
+        if (!isEditMode) getActivity().setTitle(R.string.canvas_title_new);
 
         return rootView;
     }
@@ -70,15 +74,16 @@ public class CanvasFragment extends Fragment {
     }
 
     private void saveForm() {
-        String title = titleEditText.getText().toString();
-        String description = descriptionEditText.getText().toString();
+        ContentValues values = new ContentValues(2);
+        values.put(Canvas.COL_TITLE, titleEditText.getText().toString());
+        values.put(Canvas.COL_DESC, descriptionEditText.getText().toString());
 
-        //TODO:CG (Save title + description)
-
-        if (currentCanvasId == 0) {
+        if (isEditMode)
+            getActivity().getContentResolver().update(mCanvasUri, values, null, null);
+        else {
+            mCanvasUri = getActivity().getContentResolver().insert(Canvas.CONTENT_URI, values);
             Intent intent = new Intent(getActivity(), ElementsActivity.class);
-            //TODO:CG Transmettre l'id de l'objet à l'activité suivante dans le cas d'une création
-            intent.putExtra(Constants.EXTRA_CANVAS_ID, 12345);
+            intent.setData(mCanvasUri);
             startActivity(intent);
         }
 
