@@ -19,25 +19,20 @@
         </activity>
 
         <activity
-            android:name=".ui.CanvasActivity"
-            android:parentActivityName=".ui.HomeActivity" />
+            android:name=".ui.CanvasActivity" />
 
         <activity
-            android:name=".ui.ElementsActivity"
-            android:parentActivityName=".ui.HomeActivity" />
+            android:name=".ui.ElementsActivity" />
 
         <activity
-            android:name=".ui.ExportActivity"
-            android:parentActivityName=".ui.ElementsActivity" />
+            android:name=".ui.ExportActivity"/>
 
         <activity
-            android:name=".ui.IdeasListActivity"
-            android:parentActivityName=".ui.ElementsActivity" />
+            android:name=".ui.IdeasListActivity" />
 
         <activity
             android:name=".ui.IdeaActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".ui.IdeasListActivity" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <provider
             android:name=".db.CanvasContentProvider"
