@@ -8,11 +8,9 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -42,14 +40,13 @@ public class IdeasListFragment extends ListFragment implements LoaderManager.Loa
         Bundle args = getArguments();
         mCanvasUri = getActivity().getIntent().getData();
         if (mCanvasUri != null && args != null) {
-            Log.d("IdeasListFrag", "mcanvasuri " + mCanvasUri.toString());
-            mElement = (Constants.Elements)args.getSerializable(Constants.EXTRA_ELEMENT_TYPE_ID);
+            mElement = (Constants.Elements) args.getSerializable(Constants.EXTRA_ELEMENT_TYPE_ID);
             getLoaderManager().initLoader(0, null, this);
             int titleResourceId = getResources().getIdentifier("elements_item_" + (mElement.ordinal() + 1), "string", getActivity().getPackageName());
             getActivity().setTitle(titleResourceId);
         }
 
-        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.element_ideaslist, null, new String[] {DbObjects.Ideas.COL_DESC}, new int[] {android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);// new IdeasListAdapter(getActivity(), R.layout.element_ideaslist, null);
+        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.element_ideaslist, null, new String[]{DbObjects.Ideas.COL_DESC}, new int[]{android.R.id.text1}, 0);
         setListAdapter(mCursorAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
@@ -63,7 +60,6 @@ public class IdeasListFragment extends ListFragment implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-
         return rootView;
     }
 
