@@ -1,79 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="product_services">
-        
+        <item>Which products and services are in your existing value proposition?</item>
+        <item>Which products and services you offer help your customer to get a functional job done?</item>
+        <item>Which products and services you offer help your customer to get a social job done?</item>
+        <item>Which products and services you offer help your customer to get a emotional job done?</item>
+        <item>Which products and services you offer help your customer to satisfy his/her basic needs?</item>
+        <item>Which products and services help your customer to perform ancillary jobs like a buyer?</item>
+        <item>Which products and services help your customer to perform ancillary jobs like a co-creator?</item>
+        <item>Which products and services help your customer to perform ancillary jobs like a transferer?</item>
+        <item>Which products and services are of type physical or tangible?</item>
+        <item>Which products and services are of type intangible?</item>
+        <item>Which products and services are of type digital?</item>
+        <item>Which products and services are of type financial?</item>
+        <item>Can you sort all products and services according to their importance for your customer?</item>
     </string-array>
 
     <string-array name="gain_creators">
-        <item>text_string</item>
+        <item>Could your products and services create savings that please your customers? In terms of time, money, and effort.</item>
+        <item>Could your products and services produce outcomes your customers expect or that exceed their expectations? By offering quality levels, more of something, or less of something.</item>
+        <item>Could your products and services outperform current value propositions and delight your customers? Regarding specific features, performance, or quality.</item>
+        <item>Could your products and services make your customers\’ work or life easier? Via better usability, accessibility, more services, or lower cost of ownership.</item>
+        <item>Could your products and services create positive social consequences? By making them look good or producing an increase in power or status.</item>
+        <item>Could your products and services produce do something specific that customers are looking for? In terms of good design, guarantees, or specific or more features.</item>
+        <item>Could your products and services fulfill a desire customers dream about? By helping them achieve their aspirations or getting relief from a hardship?</item>
+        <item>Could your products and services produce positive outcomes matching your customers\’ success and  failure criteria? In terms of better performance or lower cost.</item>
+        <item>Could your products and services help make adoption easier? Through lower cost, fewer investments, lower risk, better quality, improved performance, or better design.</item>
     </string-array>
 
     <string-array name="pain_relievers">
-        <item>text_string</item>
+        <item>Could your products and services produce savings? In terms of time, money, or efforts.</item>
+        <item>Could your products and services make your customers feel better? By killing frustrations, annoyances, and other things that give customers a headache.</item>
+        <item>Could your products and services fix under-performing solutions? By introducing new features, better performance, or enhanced quality.</item>
+        <item>Could your products and services put an end to difficulties and challenges your customers encounter? By making things easier or eliminating obstacles.</item>
+        <item>Could your products and services wipe out negative social consequences your customers encounter or fear? In terms of loss of face or lost power, trust, or status.</item>
+        <item>Could your products and services eliminate risks your customers fear? In terms of financial, social, technical risks, or things that could potentially go wrong.</item>
+        <item>Could your products and services help your customers better sleep at night? By addressing significant issues, diminishing concerns, or eliminating worries.</item>
+        <item>Could your products and services limit or eradicate common mistakes customers make? By helping them use a solution the right way.</item>
+        <item>Could your products and services eliminate barriers that are keeping your customer from adopting value propositions? Introducing lower or no upfront investment costs, a flatter learning curve, or eliminating other obstacles preventing adoption.</item>
     </string-array>
 
     <string-array name="customer_jobs">
         <item>What is the one thing that your customer couldn\’t live without accomplishing?</item>
-		<item>What are the stepping stones that could help your customer achieve this key job?</item>
-		<item>What are the different contexts that your customers might be in?</item>
-		<item>How do their activities and goals change depending on these different contexts?</item>
-		<item>What does your customer need to accomplish that involves interaction with others?</item>
-		<item>What tasks are your customers trying to perform in their work or personal life?</item>
-		<item>What functional problems are your customers trying to solve?</item>
-		<item>Are there problems that you think customers have that they may not even be aware of?</item>
-		<item>What emotional needs are your customers trying to satisfy?</item>
-		<item>What jobs, if completed, would give the user a sense of self-satisfaction?</item>
-		<item>How does your customer want to be perceived by others?</item>
-		<item>What can your customer do to help themselves be perceived this way?</item>
-		<item>How does your customer want to feel? What does your customer need to do to feel this way?</item>
-		<item>What supporting jobs surface throughout this life cycle?</item>
-		<item>How does your customer want to feel? What does your customer need to do to feel this way?</item>
-		<item>Does the user switch roles throughout this process?</item>
+        <item>What are the stepping stones that could help your customer achieve this key job?</item>
+        <item>What are the different contexts that your customers might be in?</item>
+        <item>How do their activities and goals change depending on these different contexts?</item>
+        <item>What does your customer need to accomplish that involves interaction with others?</item>
+        <item>What tasks are your customers trying to perform in their work or personal life?</item>
+        <item>What functional problems are your customers trying to solve?</item>
+        <item>Are there problems that you think customers have that they may not even be aware of?</item>
+        <item>What emotional needs are your customers trying to satisfy?</item>
+        <item>What jobs, if completed, would give the user a sense of self-satisfaction?</item>
+        <item>How does your customer want to be perceived by others?</item>
+        <item>What can your customer do to help themselves be perceived this way?</item>
+        <item>How does your customer want to feel? What does your customer need to do to feel this way?</item>
+        <item>What supporting jobs surface throughout this life cycle?</item>
+        <item>How does your customer want to feel? What does your customer need to do to feel this way?</item>
+        <item>Does the user switch roles throughout this process?</item>
     </string-array>
 
     <string-array name="customer_gains">
         <item>Which savings would make your customers happy?</item>
-		<item>Which savings in terms of time, money, and effort would they value?</item>
-		<item>What quality levels do they expect, and what would they wish for more or less of?</item>
-		<item>How do current value propositions delight your customers?</item>
-		<item>Which specific features do they enjoy?</item>
-		<item>What performance and quality do they expect?</item>
-		<item>What would make your customers\’ jobs or lives easier?</item>
-		<item>Could there be a flatter learning curve, more services, or lower costs of ownership?</item>
-		<item>What positive social consequences do your customers desire?</item>
-		<item>What makes them look good?</item>
-		<item>What increases their power or their status?</item>
-		<item>What are customers looking for most?</item>
-		<item>Are they searching for good  design, guarantees, specific or more features?</item>
-		<item>What do customers dream about?</item>
-		<item>What do they aspire to achieve, or what would be a big relief to them?</item>
-		<item>How do your customers measure success and failure?</item>
-		<item>How do they gauge performance or cost?</item>
-		<item>What would increase your customers\’ likelihood of adopting a value proposition?</item>
-		<item>Do they desire lower cost, less investment, lower risk, or better quality?</item>
+        <item>Which savings in terms of time, money, and effort would they value?</item>
+        <item>What quality levels do they expect, and what would they wish for more or less of?</item>
+        <item>How do current value propositions delight your customers?</item>
+        <item>Which specific features do they enjoy?</item>
+        <item>What performance and quality do they expect?</item>
+        <item>What would make your customers\’ jobs or lives easier?</item>
+        <item>Could there be a flatter learning curve, more services, or lower costs of ownership?</item>
+        <item>What positive social consequences do your customers desire?</item>
+        <item>What makes them look good?</item>
+        <item>What increases their power or their status?</item>
+        <item>What are customers looking for most?</item>
+        <item>Are they searching for good  design, guarantees, specific or more features?</item>
+        <item>What do customers dream about?</item>
+        <item>What do they aspire to achieve, or what would be a big relief to them?</item>
+        <item>How do your customers measure success and failure?</item>
+        <item>How do they gauge performance or cost?</item>
+        <item>What would increase your customers\’ likelihood of adopting a value proposition?</item>
+        <item>Do they desire lower cost, less investment, lower risk, or better quality?</item>
     </string-array>
 
     <string-array name="customer_pains">
         <item>How do your customers define too costly?</item>
-		<item>What takes a lot of time, costs too much money, or requires substantial efforts?</item>
-		<item>What makes your customers feel bad?</item>
-		<item>What are their frustrations, annoyances, or things that give them a headache?</item>
-		<item>How are current value propositions under performing for your customers?</item>
-		<item>Which features are they missing? </item>
-		<item>Are there performance issues that annoy them or malfunctions they cite?</item>
-		<item>What are the main difficulties and challenges your customers  encounter?</item>
-		<item>Do they understand how things work, have difficulties getting certain things done, or resist particular jobs for specific reasons?</item>
-		<item>What negative social consequences do your customers encounter or fear?</item>
-		<item>Are they afraid of a loss of face, power, trust, or status?</item>
-		<item>What risks do your customers fear?</item>
-		<item>Are they afraid of a loss of face, power, trust, or status?</item>
-		<item>Are they afraid of financial, social, or technical risks, or are they asking themselves what could go wrong?</item>
-		<item>What\’s keeping your customers awake at night?</item>
-		<item>What are their big issues, concerns, and worries?</item>
-		<item>What common mistakes do your customers make?</item>
-		<item>What are their big issues, concerns, and worries?</item>
-		<item>Are they using  a solution the wrong way?</item>
-		<item>What barriers are keeping your customers from adopting a value proposition?</item>
-		<item>Are there upfront investment costs, a steep learning curve, or other obstacles preventing adoption?</item>
+        <item>What takes a lot of time, costs too much money, or requires substantial efforts?</item>
+        <item>What makes your customers feel bad?</item>
+        <item>What are their frustrations, annoyances, or things that give them a headache?</item>
+        <item>How are current value propositions under performing for your customers?</item>
+        <item>Which features are they missing? </item>
+        <item>Are there performance issues that annoy them or malfunctions they cite?</item>
+        <item>What are the main difficulties and challenges your customers  encounter?</item>
+        <item>Do they understand how things work, have difficulties getting certain things done, or resist particular jobs for specific reasons?</item>
+        <item>What negative social consequences do your customers encounter or fear?</item>
+        <item>Are they afraid of a loss of face, power, trust, or status?</item>
+        <item>What risks do your customers fear?</item>
+        <item>Are they afraid of a loss of face, power, trust, or status?</item>
+        <item>Are they afraid of financial, social, or technical risks, or are they asking themselves what could go wrong?</item>
+        <item>What\’s keeping your customers awake at night?</item>
+        <item>What are their big issues, concerns, and worries?</item>
+        <item>What common mistakes do your customers make?</item>
+        <item>What are their big issues, concerns, and worries?</item>
+        <item>Are they using  a solution the wrong way?</item>
+        <item>What barriers are keeping your customers from adopting a value proposition?</item>
+        <item>Are there upfront investment costs, a steep learning curve, or other obstacles preventing adoption?</item>
     </string-array>
 </resources>
