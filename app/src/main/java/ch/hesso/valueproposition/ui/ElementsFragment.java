@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.db.DbObjects;
@@ -47,6 +48,45 @@ public class ElementsFragment extends Fragment {
         rootView.findViewById(R.id.elements_imagebutton_customerjobs).setOnClickListener(onItemClickListener);
         rootView.findViewById(R.id.elements_imagebutton_gains).setOnClickListener(onItemClickListener);
         rootView.findViewById(R.id.elements_imagebutton_pains).setOnClickListener(onItemClickListener);
+
+        Cursor cursorCounter = getActivity().getContentResolver().query(DbObjects.Ideas.CONTENT_URI, DbObjects.Ideas.PROJECTION_IDEAS, DbObjects.Ideas.COL_CANVAS + "=?", new String[]{mCanvasUri.getPathSegments().get(DbObjects.Ideas.IDEA_ID_PATH_POSITION)}, null);
+
+        if (cursorCounter.moveToFirst()) {
+            int productServices = 0;
+            int gainCreators = 0;
+            int painRelievers = 0;
+            int customerJobs = 0;
+            int customerGains = 0;
+            int customerPains = 0;
+            do {
+                switch (Constants.Elements.values()[cursorCounter.getInt(cursorCounter.getColumnIndex(DbObjects.Ideas.COL_ELEMENT))]) {
+                    case PRODUCTS_SERVICES:
+                        productServices++;
+                        break;
+                    case GAIN_CREATORS:
+                        gainCreators++;
+                        break;
+                    case PAIN_RELIEVERS:
+                        painRelievers++;
+                        break;
+                    case CUSTOMERS_JOBS:
+                        customerJobs++;
+                        break;
+                    case CUSTOMER_GAINS:
+                        customerGains++;
+                        break;
+                    case CUSTOMER_PAINS:
+                        customerPains++;
+                        break;
+                }
+            } while (cursorCounter.moveToNext());
+            TextView tvProductServices = (TextView)rootView.findViewById(R.id.products_services_count);
+            tvProductServices.setText(productServices + "");
+            TextView tvGainCreators = (TextView)rootView.findViewById(R.id.gain_creators_count);
+            tvGainCreators.setText(gainCreators + "");
+            TextView tvPainRelievers = (TextView)rootView.findViewById(R.id.pain_relievers_count);
+            tvPainRelievers.setText(painRelievers + "");
+        }
 
         return rootView;
     }
