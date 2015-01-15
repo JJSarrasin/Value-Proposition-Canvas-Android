@@ -48,10 +48,13 @@
                     android:layout_below="@+id/elements_textview_product" />
 
                 <LinearLayout
+                    android:id="@+id/elements_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:layout_below="@+id/elements_card_divider_product">
 
                     <Button
@@ -83,6 +86,35 @@
                         android:drawableTop="@drawable/ic_item_painrelievers"
                         android:text="@string/elements_item_3"
                         android:tag="2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_below="@+id/elements_product">
+                    <TextView
+                        android:id="@+id/products_services_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/gain_creators_count"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/pain_relievers_count"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
+
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -128,10 +160,13 @@
                     android:layout_below="@+id/elements_textview_customer" />
 
                 <LinearLayout
+                    android:id="@+id/elements_customer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:layout_below="@+id/elements_card_divider_customer">
 
                     <Button
@@ -163,6 +198,35 @@
                         android:drawableTop="@drawable/ic_item_pains"
                         android:text="@string/elements_item_6"
                         android:tag="5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_below="@+id/elements_customer">
+                    <TextView
+                        android:id="@+id/customer_jobs_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/gains_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/pains_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>

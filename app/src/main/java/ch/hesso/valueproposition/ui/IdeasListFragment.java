@@ -22,8 +22,8 @@ import ch.hesso.valueproposition.utils.Constants;
 
 public class IdeasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private Uri mCanvasUri;
-    private Constants.Elements mElement;
+    private Uri                 mCanvasUri;
+    private Constants.Elements  mElement;
     private SimpleCursorAdapter mCursorAdapter;
 
     public static IdeasListFragment newInstance() {
@@ -79,9 +79,7 @@ public class IdeasListFragment extends ListFragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data.moveToFirst()) {
-            mCursorAdapter.swapCursor(data);
-        }
+        mCursorAdapter.swapCursor(data);
     }
 
     @Override
