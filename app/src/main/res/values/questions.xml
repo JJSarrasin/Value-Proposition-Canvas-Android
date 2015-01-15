@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="product_services">
+        <item>product_services question 1</item>
+        <item>product_services question 2</item>
+    </string-array>
+
+    <string-array name="gain_creators">
+        <item>gain_creators question 1</item>
+        <item>gain_creators question 2</item>
+    </string-array>
+
+    <string-array name="pain_relievers">
+        <item>pain_relievers question 1</item>
+        <item>pain_relievers question 2</item>
+    </string-array>
+
+    <string-array name="customer_jobs">
+        <item>customer_jobs question 1</item>
+        <item>customer_jobs question 2</item>
+    </string-array>
+
+    <string-array name="customer_gains">
+        <item>customer_gains question 1</item>
+        <item>customer_gains question 2</item>
+    </string-array>
+
+    <string-array name="customer_pains">
+        <item>customer_pains question 1</item>
+        <item>customer_pains question 2</item>
+    </string-array>
+</resources>

@@ -10,13 +10,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.HashMap;
-import java.util.Random;
 
+import ch.hesso.valueproposition.R;
 import ch.hesso.valueproposition.utils.Constants;
 
 public class CanvasContentProvider extends ContentProvider {
@@ -38,13 +39,13 @@ public class CanvasContentProvider extends ContentProvider {
     /*
      * Constants used by the Uri matcher to choose an action based on the pattern of the incoming URI
 	 */
-    private static final int CANVAS = 1;
+    private static final int CANVAS    = 1;
     private static final int CANVAS_ID = 2;
 
-    private static final int QUESTIONS = 11;
+    private static final int QUESTIONS   = 11;
     private static final int QUESTION_ID = 12;
 
-    private static final int IDEAS = 21;
+    private static final int IDEAS   = 21;
     private static final int IDEA_ID = 22;
 
     /**
@@ -92,8 +93,11 @@ public class CanvasContentProvider extends ContentProvider {
     private DbHelper mDbHelper;
 
     private class DbHelper extends SQLiteOpenHelper {
+        private Context context;
+
         public DbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            this.context = context;
         }
 
         @Override
@@ -115,16 +119,7 @@ public class CanvasContentProvider extends ContentProvider {
                     DbObjects.Ideas.COL_CANVAS + " INTEGER, " +
                     DbObjects.Ideas.COL_ELEMENT + " INTEGER, " +
                     DbObjects.Ideas.COL_CREATED_AT + " INTEGER);");
-
-            // TODO : real questions here
-            for (int i = 1; i < 40; i++) {
-                ContentValues values = new ContentValues(2);
-                values.put(DbObjects.Questions.COL_DESC, "question " + i);
-                Random r = new Random();
-                int element = r.nextInt(Constants.Elements.values().length);
-                values.put(DbObjects.Questions.COL_ELEMENT, element);
-                long id = db.insert(DbObjects.Questions.TABLE, null, values);
-            }
+            importQuestions(db);
         }
 
         @Override
@@ -133,6 +128,44 @@ public class CanvasContentProvider extends ContentProvider {
             db.execSQL("DROP TABLE IF EXISTS '" + DbObjects.Questions.TABLE + "'");
             db.execSQL("DROP TABLE IF EXISTS '" + DbObjects.Ideas.TABLE + "'");
             onCreate(db);
+        }
+
+        private void importQuestions(SQLiteDatabase db) {
+            try {
+                db.beginTransaction();
+                final String[] productServices = context.getResources().getStringArray(R.array.product_services);
+                final String[] gainCreators = context.getResources().getStringArray(R.array.gain_creators);
+                final String[] painRelievers = context.getResources().getStringArray(R.array.pain_relievers);
+                final String[] customerJobs = context.getResources().getStringArray(R.array.customer_jobs);
+                final String[] customerGains = context.getResources().getStringArray(R.array.customer_gains);
+                final String[] customerPains = context.getResources().getStringArray(R.array.customer_pains);
+
+                importQuestionsForElement(db, productServices, Constants.Elements.PRODUCTS_SERVICES);
+                importQuestionsForElement(db, gainCreators, Constants.Elements.GAIN_CREATORS);
+                importQuestionsForElement(db, painRelievers, Constants.Elements.PAIN_RELIEVERS);
+                importQuestionsForElement(db, customerJobs, Constants.Elements.CUSTOMERS_JOBS);
+                importQuestionsForElement(db, customerGains, Constants.Elements.CUSTOMER_GAINS);
+                importQuestionsForElement(db, customerPains, Constants.Elements.CUSTOMER_PAINS);
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                Log.e(TAG, "Error while inserting questions");
+                e.printStackTrace();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
+        private void importQuestionsForElement(SQLiteDatabase db, String[] questions, Constants.Elements element) {
+            final String sql = "INSERT INTO " + DbObjects.Questions.TABLE + " (" + DbObjects.Questions.COL_DESC + ", " + DbObjects.Questions.COL_ELEMENT + ") VALUES (?, ?)";
+            SQLiteStatement stm = db.compileStatement(sql);
+
+            for (String question : questions) {
+                stm.bindString(1, question);
+                stm.bindLong(2, element.ordinal());
+                stm.executeInsert();
+            }
+
+            stm.close();
         }
     }
 
@@ -295,8 +328,7 @@ public class CanvasContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        long now = System.currentTimeMillis();
-        int updatedRows = 0;
+        int updatedRows;
         String finalWhere;
 
         switch (sUriMatcher.match(uri)) {
