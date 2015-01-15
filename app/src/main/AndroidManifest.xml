@@ -25,7 +25,8 @@
             android:name=".ui.ElementsActivity" />
 
         <activity
-            android:name=".ui.ExportActivity"/>
+            android:name=".ui.ExportActivity"
+            android:screenOrientation="landscape" />
 
         <activity
             android:name=".ui.IdeasListActivity" />

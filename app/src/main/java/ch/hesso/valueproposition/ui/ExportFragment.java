@@ -1,9 +1,17 @@
 package ch.hesso.valueproposition.ui;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,15 +19,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ch.hesso.valueproposition.R;
@@ -27,7 +41,6 @@ import ch.hesso.valueproposition.db.DbObjects;
 import ch.hesso.valueproposition.utils.Constants.Elements;
 
 public class ExportFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
 
     private static final int LOADER_CANVAS = 1;
     private static final int LOADER_IDEAS = 2;
@@ -37,16 +50,8 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
     private int mLoadedCount = 0;
 
     private Uri mCanvasUri;
-    /**
-     * Pour YB : éléments du canvas
-     */
     private String mCanvasTitle;
-    private String mCanvasDesc;
-    private long mCanvasCreatedAt;
 
-    /**
-     * Pour YB : Lists contenant la description de l'Idea
-     */
     private List<String> productsServiceList = new ArrayList<>();
     private List<String> gainCreatorsList = new ArrayList<>();
     private List<String> painRelieversList = new ArrayList<>();
@@ -90,11 +95,9 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
                 return true;
 
             case R.id.action_share:
+                View rootView = getActivity().findViewById(R.id.export_rootview);
 
-                //TODO:YB Passer le bitmap au lieu du bitmap vide de 1x1
-                Bitmap icon = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-                //Bitmap icon = myBitmap;
-
+                Bitmap generatedBitmap = generateBitmap();
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
 
@@ -105,7 +108,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
 
                 try {
                     OutputStream outstream = getActivity().getContentResolver().openOutputStream(uri);
-                    icon.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+                    generatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
                     outstream.close();
                 } catch (Exception e) {
                     System.err.println(e.toString());
@@ -118,11 +121,6 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void generateBitmap() {
-        //TODO: YB Création de l'image avec les données dans les lists
-
     }
 
     @Override
@@ -145,13 +143,18 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
             case LOADER_CANVAS:
                 if (data.moveToFirst()) {
                     mCanvasTitle = data.getString(data.getColumnIndex(DbObjects.Canvas.COL_TITLE));
-                    mCanvasDesc = data.getString(data.getColumnIndex(DbObjects.Canvas.COL_DESC));
-                    mCanvasCreatedAt = data.getLong(data.getColumnIndex(DbObjects.Canvas.COL_CREATED_AT));
                     getActivity().setTitle(mCanvasTitle);
                 }
                 mLoadedCount++;
                 break;
             case LOADER_IDEAS:
+                gainsList.clear();
+                painsList.clear();
+                customerJobsList.clear();
+                gainCreatorsList.clear();
+                painRelieversList.clear();
+                productsServiceList.clear();
+
                 if (data.moveToFirst()) {
                     do {
                         String description = data.getString(data.getColumnIndex(DbObjects.Ideas.COL_DESC));
@@ -182,7 +185,10 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
                 break;
         }
         if (mLoadedCount > 1) {
-            generateBitmap();
+            FrameLayout rootView = (FrameLayout) getActivity().findViewById(R.id.export_rootview);
+            ExportView ev = new ExportView(getActivity(), rootView);
+            rootView.addView(ev);
+
             isGenerated = true;
             if (mMenu != null) {
                 mMenu.findItem(R.id.action_share).setVisible(isGenerated);
@@ -190,7 +196,126 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
+
+    private Bitmap generateBitmap() {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        float scale = getResources().getDisplayMetrics().density;
+        paint.setTextSize((int) (13 * scale));
+
+        View exportLayout = getActivity().getLayoutInflater().inflate(R.layout.layout_export, null);
+        exportLayout.setDrawingCacheEnabled(true);
+        // Without it the view will have a dimension of 0,0 and the bitmap will be null
+        exportLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        exportLayout.layout(0, 0, exportLayout.getMeasuredWidth(), exportLayout.getMeasuredHeight());
+        exportLayout.buildDrawingCache(true);
+        Bitmap bm = Bitmap.createBitmap(exportLayout.getDrawingCache());
+        exportLayout.setDrawingCacheEnabled(false);
+
+        Canvas myCanvas = new Canvas(bm);
+
+        Rect bounds = new Rect();
+
+        int productServiceMaxLength = 16;
+        String[] productService = getStringFormatted(productsServiceList, productServiceMaxLength);
+        paint.getTextBounds(productService[0], 0, 1, bounds);
+        int lineHeight = bounds.height()+convertDpToPx(4);
+        int startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 2;
+        for (int i = 0 ; i < productService.length ; i++) {
+            myCanvas.drawText(productService[i], convertDpToPx(23), startHeightPoint + i*lineHeight, paint);
+        }
+
+        int gainCreatorsMaxLength = 18;
+        String[] gainCreators = getStringFormatted(gainCreatorsList, gainCreatorsMaxLength);
+        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 3;
+        for (int i = 0 ; i < gainCreators.length ; i++) {
+            myCanvas.drawText(gainCreators[i], convertDpToPx(170), startHeightPoint + i*lineHeight, paint);
+        }
+
+        int painRelieversMaxLength = 18;
+        String[] painRelievers = getStringFormatted(painRelieversList, painRelieversMaxLength);
+        startHeightPoint = bm.getHeight()/2 + (bm.getHeight() - lineHeight*productService.length) / 5;
+        for (int i = 0 ; i < painRelievers.length ; i++) {
+            myCanvas.drawText(painRelievers[i], convertDpToPx(170), startHeightPoint + i*lineHeight, paint);
+        }
+
+        int gainsMaxLength = 15;
+        String[] gains = getStringFormatted(gainsList, gainsMaxLength);
+        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 3;
+        for (int i = 0 ; i < gains.length ; i++) {
+            myCanvas.drawText(gains[i], convertDpToPx(350), startHeightPoint + i*lineHeight, paint);
+        }
+
+        int painsMaxLength = 15;
+        String[] pains = getStringFormatted(painsList, painsMaxLength);
+        startHeightPoint = bm.getHeight()/2 + (bm.getHeight() - lineHeight*productService.length) / 5;
+        for (int i = 0 ; i < pains.length ; i++) {
+            myCanvas.drawText(pains[i], convertDpToPx(350), startHeightPoint + i*lineHeight, paint);
+        }
+
+        int customerJobsMaxLength = 15;
+        String[] customerJobs = getStringFormatted(customerJobsList, customerJobsMaxLength);
+        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 2;
+        for (int i = 0 ; i < customerJobs.length ; i++) {
+            myCanvas.drawText(customerJobs[i], convertDpToPx(480), startHeightPoint + i*lineHeight, paint);
+        }
+
+        return bm;
+    }
+
+    private String[] getStringFormatted(List<String> list, int maxLength) {
+        ArrayList<String> resultList = new ArrayList<String>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            int length = list.get(i).length();
+
+            if (length <= maxLength)
+                resultList.add(list.get(i));
+            else {
+                int totalLine = length/maxLength + 1;
+
+                for (int j = 0 ; j < totalLine ; j++) {
+                    if (j == totalLine-1)
+                        resultList.add(list.get(i).substring(j*maxLength, j*maxLength+length%maxLength));
+                    else
+                        resultList.add(list.get(i).substring(j*maxLength, j*maxLength+maxLength));
+                }
+            }
+        }
+
+        return resultList.toArray(new String[resultList.size()]);
+    }
+
+    private int convertDpToPx(int dp) {
+        Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    private class ExportView extends View {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        View rootView;
+
+        public ExportView(Context context, View rootView) {
+            super(context);
+            this.rootView = rootView;
+
+            float scale = getResources().getDisplayMetrics().density;
+            paint.setTextSize((int) (13 * scale));
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            setMeasuredDimension(getMeasuredWidth(), getMeasuredHeight());
+        }
+
+        @Override
+        public void onDraw(Canvas screenCanvas) {
+            screenCanvas.drawBitmap(generateBitmap(), 0, 0, paint);
+        }
     }
 }
