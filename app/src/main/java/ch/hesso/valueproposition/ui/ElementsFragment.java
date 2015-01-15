@@ -118,28 +118,30 @@ public class ElementsFragment extends Fragment implements LoaderManager.LoaderCa
         int customerJobs = 0;
         int customerGains = 0;
         int customerPains = 0;
-        do {
-            switch (Constants.Elements.values()[cursor.getInt(cursor.getColumnIndex(DbObjects.Ideas.COL_ELEMENT))]) {
-                case PRODUCTS_SERVICES:
-                    productServices++;
-                    break;
-                case GAIN_CREATORS:
-                    gainCreators++;
-                    break;
-                case PAIN_RELIEVERS:
-                    painRelievers++;
-                    break;
-                case CUSTOMERS_JOBS:
-                    customerJobs++;
-                    break;
-                case CUSTOMER_GAINS:
-                    customerGains++;
-                    break;
-                case CUSTOMER_PAINS:
-                    customerPains++;
-                    break;
-            }
-        } while (cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            do {
+                switch (Constants.Elements.values()[cursor.getInt(cursor.getColumnIndex(DbObjects.Ideas.COL_ELEMENT))]) {
+                    case PRODUCTS_SERVICES:
+                        productServices++;
+                        break;
+                    case GAIN_CREATORS:
+                        gainCreators++;
+                        break;
+                    case PAIN_RELIEVERS:
+                        painRelievers++;
+                        break;
+                    case CUSTOMERS_JOBS:
+                        customerJobs++;
+                        break;
+                    case CUSTOMER_GAINS:
+                        customerGains++;
+                        break;
+                    case CUSTOMER_PAINS:
+                        customerPains++;
+                        break;
+                }
+            } while (cursor.moveToNext());
+        }
         TextView tvProductServices = (TextView) mRootView.findViewById(R.id.products_services_count);
         tvProductServices.setText(productServices + "");
 
