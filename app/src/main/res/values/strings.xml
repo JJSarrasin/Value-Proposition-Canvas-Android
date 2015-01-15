@@ -5,6 +5,10 @@
     <!-- Home-->
     <string name="home_canvas_empty">Create a new canvas</string>
 
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_legal">Questions are taken from Pigneur &amp; Osterwalder book : Value Proposition Canvas\nhttps://strategyzer.com/vpd</string>
+
     <!-- Canvas (Edit) -->
     <string name="canvas_title_new">New Canvas</string>
     <string name="canvas_title_edit">Edit Canvas</string>

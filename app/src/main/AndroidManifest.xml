@@ -19,7 +19,12 @@
         </activity>
 
         <activity
-            android:name=".ui.CanvasActivity" />
+            android:name=".ui.AboutActivity"
+            android:label="@string/about_title" />
+
+        <activity
+            android:name=".ui.CanvasActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
 
         <activity
             android:name=".ui.ElementsActivity" />
