@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
 
     <TextView
         style="@style/TextAppearance.AppCompat.Large"
@@ -15,7 +15,6 @@
         android:layout_centerHorizontal="true"/>
 
     <TextView
-
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +30,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_item_gains"
+        android:src="@drawable/ic_launcher"
         android:id="@+id/imageView"
         android:layout_below="@+id/app_name"
         android:layout_centerHorizontal="true"
