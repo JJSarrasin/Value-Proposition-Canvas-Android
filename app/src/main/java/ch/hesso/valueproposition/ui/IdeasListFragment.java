@@ -22,9 +22,10 @@ import ch.hesso.valueproposition.utils.Constants;
 
 public class IdeasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private Uri                 mCanvasUri;
-    private Constants.Elements  mElement;
-    private SimpleCursorAdapter mCursorAdapter;
+    private Uri                  mCanvasUri;
+    private Constants.Elements   mElement;
+    private SimpleCursorAdapter  mCursorAdapter;
+    private FloatingActionButton mFab;
 
     public static IdeasListFragment newInstance() {
         return new IdeasListFragment();
@@ -49,9 +50,9 @@ public class IdeasListFragment extends ListFragment implements LoaderManager.Loa
         mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.element_ideaslist, null, new String[]{DbObjects.Ideas.COL_DESC}, new int[]{android.R.id.text1}, 0);
         setListAdapter(mCursorAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
-        fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
+        mFab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), IdeaActivity.class);
@@ -80,11 +81,11 @@ public class IdeasListFragment extends ListFragment implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
+        mFab.show(); // bugfix for fab disappearing when last list element is deleted
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
-
     }
 }

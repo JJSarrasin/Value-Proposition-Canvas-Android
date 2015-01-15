@@ -29,6 +29,7 @@ import ch.hesso.valueproposition.db.DbObjects.Canvas;
 public class HomeFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ResourceCursorAdapter mCursorAdapter;
+    private FloatingActionButton mFab;
 
     public HomeFragment() {
     }
@@ -63,9 +64,9 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
         setListAdapter(mCursorAdapter);
         getLoaderManager().initLoader(0, null, this);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
-        fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
+        mFab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), CanvasActivity.class));
@@ -106,6 +107,7 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
+        mFab.show(); // bugfix for fab disappearing when last list element is deleted
     }
 
     @Override

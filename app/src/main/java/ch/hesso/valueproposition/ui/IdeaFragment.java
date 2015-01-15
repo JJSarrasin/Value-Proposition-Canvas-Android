@@ -27,12 +27,13 @@ import ch.hesso.valueproposition.db.DbObjects;
 import ch.hesso.valueproposition.utils.Constants;
 
 public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private EditText contentEditText;
-    private Uri mIdeaUri;
-    private String mCanvasId;
-    private Constants.Elements mElement;
-    private SimpleCursorAdapter mQuestionsAdapter;
-    private boolean isEditMode;
+    private EditText             contentEditText;
+    private Uri                  mIdeaUri;
+    private String               mCanvasId;
+    private Constants.Elements   mElement;
+    private SimpleCursorAdapter  mQuestionsAdapter;
+    private boolean              isEditMode;
+    private FloatingActionButton mFab;
 
     public static IdeaFragment newInstance() {
         return new IdeaFragment();
@@ -73,9 +74,9 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
         mQuestionsAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, new String[]{DbObjects.Questions.COL_DESC}, new int[]{android.R.id.text1}, 0);
         setListAdapter(mQuestionsAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
-        fab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab_add);
+        mFab.attachToListView((ListView) rootView.findViewById(android.R.id.list));
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText input = new EditText(getActivity());
@@ -179,6 +180,7 @@ public class IdeaFragment extends ListFragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mQuestionsAdapter.swapCursor(data);
+        mFab.show(); // bugfix for fab disappearing when last list element is deleted
     }
 
     @Override
