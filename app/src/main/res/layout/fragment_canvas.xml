@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/canvas_edittext_title"
+        android:inputType="textCapSentences"
         android:textSize="15sp" />
 
     <EditText
@@ -19,5 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/canvas_edittext_description"
+        android:inputType="textCapSentences"
         android:textSize="15sp" />
 </LinearLayout>
