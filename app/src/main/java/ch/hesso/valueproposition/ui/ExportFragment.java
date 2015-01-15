@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,13 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ch.hesso.valueproposition.R;
@@ -187,7 +181,9 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         if (mLoadedCount > 1) {
             FrameLayout rootView = (FrameLayout) getActivity().findViewById(R.id.export_rootview);
             ExportView ev = new ExportView(getActivity(), rootView);
-            rootView.addView(ev);
+            Point size = new Point();
+            getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+            rootView.addView(ev, size.x, size.y);
 
             isGenerated = true;
             if (mMenu != null) {
