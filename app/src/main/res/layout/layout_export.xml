@@ -3,25 +3,33 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
     <TextView
         android:id="@+id/export_textview_valueproposition"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textColor="@color/primary_text"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Value Proposition" />
 
     <TextView
         android:id="@+id/export_textview_customersegment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="310dp"
-        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textColor="@color/primary_text"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Customer Segment" />
+    </LinearLayout>
 
     <View
         android:id="@+id/export_view_shape_rectangle"
@@ -39,6 +47,7 @@
         android:layout_marginTop="60dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Products &amp; Services" />
 
     <ImageView
@@ -57,6 +66,7 @@
         android:layout_marginTop="47dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Gain Creators" />
 
     <ImageView
@@ -75,6 +85,7 @@
         android:layout_marginTop="185dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Pain Relievers" />
 
     <ImageView
@@ -133,6 +144,7 @@
         android:layout_marginTop="55dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Gains" />
 
     <ImageView
@@ -151,6 +163,7 @@
         android:layout_marginTop="192dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Pains" />
 
     <ImageView
@@ -169,6 +182,7 @@
         android:layout_marginTop="90dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:text="Customer Job(s)" />
 
     <ImageView

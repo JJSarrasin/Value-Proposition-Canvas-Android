@@ -270,12 +270,25 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
                 int totalLine = length/maxLength + 1;
 
                 for (int j = 0 ; j < totalLine ; j++) {
+                    String stringToAdd = "";
+
                     if (j == totalLine-1)
-                        resultList.add(list.get(i).substring(j*maxLength, j*maxLength+length%maxLength));
-                    else
-                        resultList.add(list.get(i).substring(j*maxLength, j*maxLength+maxLength));
+                        stringToAdd += list.get(i).substring(j*maxLength, j*maxLength+length%maxLength).trim();
+                    else {
+                        if (j == totalLine-2 && length%maxLength == 1) { //Handle 1 single character to avoid return for 1 char
+                            stringToAdd += list.get(i).substring(j * maxLength).trim();
+                            resultList.add(stringToAdd);
+                            break;
+                        }
+                        else
+                            stringToAdd += list.get(i).substring(j * maxLength, j * maxLength + maxLength).trim() + "-";
+                    }
+
+                    resultList.add(stringToAdd);
                 }
             }
+
+            resultList.add("");
         }
 
         return resultList.toArray(new String[resultList.size()]);
