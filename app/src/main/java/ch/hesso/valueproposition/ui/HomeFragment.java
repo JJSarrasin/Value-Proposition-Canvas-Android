@@ -10,6 +10,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -32,6 +35,7 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         //mCursorAdapter = new CanvasListAdapter(getActivity(), R.layout.element_home_card, null);
@@ -69,6 +73,22 @@ public class HomeFragment extends ListFragment implements LoaderManager.LoaderCa
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_home, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_about) {
+            startActivity(new Intent(getActivity(), AboutActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void onListItemClick(ListView l, View v, int position, long id) {
