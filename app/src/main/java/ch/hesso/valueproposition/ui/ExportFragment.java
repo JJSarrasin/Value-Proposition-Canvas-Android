@@ -213,46 +213,68 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
 
         int productServiceMaxLength = 16;
         String[] productService = getStringFormatted(productsServiceList, productServiceMaxLength);
-        paint.getTextBounds(productService[0], 0, 1, bounds);
-        int lineHeight = bounds.height()+convertDpToPx(4);
-        int startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 2;
-        for (int i = 0 ; i < productService.length ; i++) {
-            myCanvas.drawText(productService[i], convertDpToPx(23), startHeightPoint + i*lineHeight, paint);
+        if (productService.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 2;
+            for (int i = 0 ; i < productService.length ; i++) {
+                myCanvas.drawText(productService[i], convertDpToPx(23), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         int gainCreatorsMaxLength = 18;
         String[] gainCreators = getStringFormatted(gainCreatorsList, gainCreatorsMaxLength);
-        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 3;
-        for (int i = 0 ; i < gainCreators.length ; i++) {
-            myCanvas.drawText(gainCreators[i], convertDpToPx(170), startHeightPoint + i*lineHeight, paint);
+        if (gainCreators.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
+            for (int i = 0; i < gainCreators.length; i++) {
+                myCanvas.drawText(gainCreators[i], convertDpToPx(170), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         int painRelieversMaxLength = 18;
         String[] painRelievers = getStringFormatted(painRelieversList, painRelieversMaxLength);
-        startHeightPoint = bm.getHeight()/2 + (bm.getHeight() - lineHeight*productService.length) / 5;
-        for (int i = 0 ; i < painRelievers.length ; i++) {
-            myCanvas.drawText(painRelievers[i], convertDpToPx(170), startHeightPoint + i*lineHeight, paint);
+        if (painRelievers.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * productService.length) / 5;
+            for (int i = 0; i < painRelievers.length; i++) {
+                myCanvas.drawText(painRelievers[i], convertDpToPx(170), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         int gainsMaxLength = 15;
         String[] gains = getStringFormatted(gainsList, gainsMaxLength);
-        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 3;
-        for (int i = 0 ; i < gains.length ; i++) {
-            myCanvas.drawText(gains[i], convertDpToPx(350), startHeightPoint + i*lineHeight, paint);
+        if (gains.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
+            for (int i = 0; i < gains.length; i++) {
+                myCanvas.drawText(gains[i], convertDpToPx(350), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         int painsMaxLength = 15;
         String[] pains = getStringFormatted(painsList, painsMaxLength);
-        startHeightPoint = bm.getHeight()/2 + (bm.getHeight() - lineHeight*productService.length) / 5;
-        for (int i = 0 ; i < pains.length ; i++) {
-            myCanvas.drawText(pains[i], convertDpToPx(350), startHeightPoint + i*lineHeight, paint);
+        if (pains.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * productService.length) / 5;
+            for (int i = 0; i < pains.length; i++) {
+                myCanvas.drawText(pains[i], convertDpToPx(350), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         int customerJobsMaxLength = 15;
         String[] customerJobs = getStringFormatted(customerJobsList, customerJobsMaxLength);
-        startHeightPoint = (bm.getHeight() - lineHeight*productService.length) / 2;
-        for (int i = 0 ; i < customerJobs.length ; i++) {
-            myCanvas.drawText(customerJobs[i], convertDpToPx(480), startHeightPoint + i*lineHeight, paint);
+        if (customerJobs.length > 0) {
+            paint.getTextBounds(productService[0], 0, 1, bounds);
+            int lineHeight = bounds.height()+convertDpToPx(4);
+            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 2;
+            for (int i = 0; i < customerJobs.length; i++) {
+                myCanvas.drawText(customerJobs[i], convertDpToPx(480), startHeightPoint + i * lineHeight, paint);
+            }
         }
 
         return bm;
