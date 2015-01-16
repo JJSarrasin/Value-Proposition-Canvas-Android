@@ -225,7 +225,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         int gainCreatorsMaxLength = 18;
         String[] gainCreators = getStringFormatted(gainCreatorsList, gainCreatorsMaxLength);
         if (gainCreators.length > 0) {
-            paint.getTextBounds(productService[0], 0, 1, bounds);
+            paint.getTextBounds(gainCreators[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
             int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
             for (int i = 0; i < gainCreators.length; i++) {
@@ -236,7 +236,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         int painRelieversMaxLength = 18;
         String[] painRelievers = getStringFormatted(painRelieversList, painRelieversMaxLength);
         if (painRelievers.length > 0) {
-            paint.getTextBounds(productService[0], 0, 1, bounds);
+            paint.getTextBounds(painRelievers[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
             int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * productService.length) / 5;
             for (int i = 0; i < painRelievers.length; i++) {
@@ -247,7 +247,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         int gainsMaxLength = 15;
         String[] gains = getStringFormatted(gainsList, gainsMaxLength);
         if (gains.length > 0) {
-            paint.getTextBounds(productService[0], 0, 1, bounds);
+            paint.getTextBounds(gains[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
             int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
             for (int i = 0; i < gains.length; i++) {
@@ -269,7 +269,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         int customerJobsMaxLength = 15;
         String[] customerJobs = getStringFormatted(customerJobsList, customerJobsMaxLength);
         if (customerJobs.length > 0) {
-            paint.getTextBounds(productService[0], 0, 1, bounds);
+            paint.getTextBounds(customerJobs[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
             int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 2;
             for (int i = 0; i < customerJobs.length; i++) {
