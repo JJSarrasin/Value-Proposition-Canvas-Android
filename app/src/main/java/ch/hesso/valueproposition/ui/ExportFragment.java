@@ -222,12 +222,13 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
             }
         }
 
+
         int gainCreatorsMaxLength = 18;
         String[] gainCreators = getStringFormatted(gainCreatorsList, gainCreatorsMaxLength);
         if (gainCreators.length > 0) {
             paint.getTextBounds(gainCreators[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
-            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
+            int startHeightPoint = (bm.getHeight() - lineHeight * gainCreators.length) / 3;
             for (int i = 0; i < gainCreators.length; i++) {
                 myCanvas.drawText(gainCreators[i], convertDpToPx(170), startHeightPoint + i * lineHeight, paint);
             }
@@ -238,7 +239,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         if (painRelievers.length > 0) {
             paint.getTextBounds(painRelievers[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
-            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * productService.length) / 5;
+            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * painRelievers.length) / 5;
             for (int i = 0; i < painRelievers.length; i++) {
                 myCanvas.drawText(painRelievers[i], convertDpToPx(170), startHeightPoint + i * lineHeight, paint);
             }
@@ -249,7 +250,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         if (gains.length > 0) {
             paint.getTextBounds(gains[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
-            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 3;
+            int startHeightPoint = (bm.getHeight() - lineHeight * gains.length) / 3;
             for (int i = 0; i < gains.length; i++) {
                 myCanvas.drawText(gains[i], convertDpToPx(350), startHeightPoint + i * lineHeight, paint);
             }
@@ -258,9 +259,9 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         int painsMaxLength = 15;
         String[] pains = getStringFormatted(painsList, painsMaxLength);
         if (pains.length > 0) {
-            paint.getTextBounds(productService[0], 0, 1, bounds);
+            paint.getTextBounds(pains[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
-            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * productService.length) / 5;
+            int startHeightPoint = bm.getHeight() / 2 + (bm.getHeight() - lineHeight * pains.length) / 5;
             for (int i = 0; i < pains.length; i++) {
                 myCanvas.drawText(pains[i], convertDpToPx(350), startHeightPoint + i * lineHeight, paint);
             }
@@ -271,7 +272,7 @@ public class ExportFragment extends Fragment implements LoaderManager.LoaderCall
         if (customerJobs.length > 0) {
             paint.getTextBounds(customerJobs[0], 0, 1, bounds);
             int lineHeight = bounds.height()+convertDpToPx(4);
-            int startHeightPoint = (bm.getHeight() - lineHeight * productService.length) / 2;
+            int startHeightPoint = (bm.getHeight() - lineHeight * customerJobs.length) / 2;
             for (int i = 0; i < customerJobs.length; i++) {
                 myCanvas.drawText(customerJobs[i], convertDpToPx(480), startHeightPoint + i * lineHeight, paint);
             }
